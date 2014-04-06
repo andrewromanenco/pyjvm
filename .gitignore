@@ -1,0 +1,5 @@
+vm-cache.bin
+*.pyc
+rt/rt.jar
+test-output/
+*.log

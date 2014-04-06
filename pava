@@ -1,0 +1,4 @@
+#!/bin/sh
+
+path=`dirname $0`
+python $path/java.py $@
