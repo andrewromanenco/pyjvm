@@ -30,6 +30,7 @@ DEFAULTS_VALS = {
 
 def arr_to_string(str_arr):
     '''Convert string's array to real unicode string'''
+    result_string = ""
     for char_ in str_arr:
         result_string += str(unichr(char_))
     return result_string
