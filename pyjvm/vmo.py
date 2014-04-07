@@ -24,6 +24,7 @@ executed. This is different from handling native methods.
 Example of vm owned object is STDOUT (print something on the screen).
 """
 
+import os
 import logging
 import sys
 
@@ -36,14 +37,16 @@ VM_OBJECTS = {
     "Stdout.OutputStream": -1,
     "System.Properties": -2,
     "JavaLangAccess": -3,
-    "Stdin.InputputStream": -4
+    "Stdin.InputputStream": -4,
+    "FileSystem": -5
     }
 
 VM_CLASS_NAMES = {
     -1: "java/io/OutputStream",
     -2: "java/util/Properties",
     -3: "sun/misc/JavaLangAccess",
-    -4: "java/io/InputStream"
+    -4: "java/io/InputStream",
+    -5: "java/io/FileSystem"
 }
 
 
@@ -166,3 +169,45 @@ def vmo4_read___I(frame, args):
         frame.stack.append(-1)
     else:
         frame.stack.append(ord(c))
+
+
+def vmo5_getSeparator___C(frame, args):
+    '''Always slash'''
+    frame.stack.append(ord('/'))
+
+
+def vmo5_getPathSeparator___C(frame, args):
+    '''Do not check operating system'''
+    frame.stack.append(ord(':'))
+
+
+def vmo5_normalize__Ljava_lang_String__Ljava_lang_String_(frame, args):
+    '''Normalize according api rules'''
+    s_ref = args[1]
+    value = str_to_string(frame.vm, s_ref)
+    norm = os.path.normpath(value)
+    if value != norm:
+        s_ref = frame.vm.make_heap_string(norm)
+    frame.stack.append(s_ref)
+
+
+def vmo5_prefixLength__Ljava_lang_String__I(frame, args):
+    '''This is shortcut'''
+    # s_ref = args[1]
+    # value = str_to_string(frame.vm, s_ref)
+    frame.stack.append(0)  # for now
+
+
+def vmo5_getBooleanAttributes__Ljava_io_File__I(frame, args):
+    '''See javadoc for details. Subset of all attributes is supported'''
+    ref = args[1]
+    assert ref is not None  # NPE
+    o = frame.vm.heap[ref[1]]
+    path_ref = o.fields['path']
+    path = str_to_string(frame.vm, path_ref)
+    result = 0
+    if os.path.exists(path):
+        result |= 0x01
+        if not os.path.isfile(path):
+            result |= 0x04
+    frame.stack.append(result)

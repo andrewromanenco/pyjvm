@@ -26,6 +26,7 @@ from pyjvm.platform.java.lang.string import *
 from pyjvm.platform.java.lang.system import *
 from pyjvm.platform.java.lang.thread import *
 from pyjvm.platform.java.lang.throwable import *
+from pyjvm.platform.java.io.filesystem import *
 from pyjvm.platform.java.security.accesscontroller import *
 from pyjvm.platform.sun.misc.unsafe import *
 from pyjvm.platform.sun.misc.vm import *
