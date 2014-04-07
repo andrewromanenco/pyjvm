@@ -1,0 +1,3 @@
+Sample file to read
+[FILEREADER.OK]
+Done.

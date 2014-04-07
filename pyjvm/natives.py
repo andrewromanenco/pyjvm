@@ -26,6 +26,8 @@ from pyjvm.platform.java.lang.string import *
 from pyjvm.platform.java.lang.system import *
 from pyjvm.platform.java.lang.thread import *
 from pyjvm.platform.java.lang.throwable import *
+from pyjvm.platform.java.io.filedescriptor import *
+from pyjvm.platform.java.io.fileinputstream import *
 from pyjvm.platform.java.io.filesystem import *
 from pyjvm.platform.java.security.accesscontroller import *
 from pyjvm.platform.sun.misc.unsafe import *
@@ -58,4 +60,5 @@ def exec_native(frame, args, klass, method_name, method_signature):
                      method_signature, klass.this_name)
         raise Exception("Op ({0}) is not yet supported in natives".format(
                         lookup_name))
+    logger.debug("Call native: %s", lookup_name)
     globals()[lookup_name](frame, args)

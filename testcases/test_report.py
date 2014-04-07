@@ -36,7 +36,7 @@ with open(report_file, 'r') as report:
 
 assert data is not None
 
-TARGET_SCORE = 8
+TARGET_SCORE = 9
 SCORE = 0
 
 
@@ -61,6 +61,7 @@ verify("From 1000 daemon 9", "langfeatures.ThreadsDaemons")
 verify("first base: 109 =*10: 1090", "langfeatures.ThreadsSync")
 verify("second base: -93 =*10: -930", "langfeatures.ThreadsSync")
 verify("[1, 2, 3, 4, 5]", "sorts.HeapSort")
+verify("[FILEREADER.OK]", "io.FilePrint")
 
 print
 if SCORE == TARGET_SCORE:

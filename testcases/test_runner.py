@@ -110,3 +110,10 @@ testcase = copy.deepcopy(vm)
 run(testcase, "sorts.HeapSort")
 print "TestCase8.End"
 print
+
+print "TestCase9.Begin"
+testcase = copy.deepcopy(vm)
+run(testcase, "io.FilePrint")
+print "TestCase9.End"
+print
+

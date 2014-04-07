@@ -26,6 +26,7 @@ import logging
 
 from pyjvm.jvmo import JArray
 from pyjvm.jvmo import JavaClass
+from pyjvm.prim import PRIMITIVES
 from pyjvm.utils import arr_to_string, str_to_string
 
 from pyjvm.ops.ops_cond import checkcast
@@ -192,3 +193,14 @@ def java_lang_Class_isAssignableFrom__Ljava_lang_Class__Z(frame, args):
         frame.stack.append(1)
     else:
         frame.stack.append(0)
+
+
+def java_lang_Class_getComponentType___Ljava_lang_Class_(frame, args):
+    o = frame.vm.heap[args[0][1]]
+    c_name = o.fields["@CLASS_NAME"]
+    assert c_name[0] == "["
+    c_name = c_name[1:]
+    if c_name in PRIMITIVES:
+        c_name = PRIMITIVES[c_name]
+    klass = frame.vm.get_class(c_name)
+    frame.stack.append(klass.heap_ref)
