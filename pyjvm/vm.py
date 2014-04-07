@@ -20,7 +20,7 @@ Initialization, threads, frame management.
 import logging
 from collections import deque
 
-from pyjvm.bytecode import get_operation
+from pyjvm.bytecode import get_operation, get_operation_name
 from pyjvm.class_loader import class_loader
 from pyjvm.class_path import read_class_path
 from pyjvm.frame import Frame
@@ -369,8 +369,8 @@ class VM(object):
                 # Make function name to be called
                 op_call = hex(ord(op))
 
-                #logger.debug("About to execute op_{2}: {0} ({3}) in {1}".format(
-                #    op_call, frame.id, frame.pc - 1, ops_name[op_call]))
+                logger.debug("About to execute {2}: op_{0} ({3}) in {1}".format(
+                    op_call, frame.id, frame.pc - 1, get_operation_name(op_call)))
                 
                 opt = get_operation(op_call)
                 if opt is None:
