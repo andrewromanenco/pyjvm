@@ -17,6 +17,7 @@
 
 import logging
 
+from pyjvm.bytecode import bytecode
 from pyjvm.frame import Frame
 from pyjvm.natives import exec_native
 from pyjvm.thread import SkipThreadCycle
@@ -26,7 +27,8 @@ from pyjvm.vmo import VM_OBJECTS
 logger = logging.getLogger(__name__)
 
 
-def op_0xb8(frame):  # invokestatic
+@bytecode(code=0xb8)
+def invokestatic(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_methodref = frame.this_class.constant_pool[index]

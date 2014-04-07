@@ -17,6 +17,7 @@
 
 import struct
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_int
 from pyjvm.jassert import jassert_long
 from pyjvm.ops.ops_calc import cut_to_int
@@ -27,7 +28,8 @@ def rshift(val, n):
     return (val % 0x100000000) >> n
 
 
-def op_0x78(frame):  # ishl
+@bytecode(code=0x78)
+def ishl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -39,7 +41,8 @@ def op_0x78(frame):  # ishl
     frame.stack.append(result)
 
 
-def op_0x79(frame):  # lshl
+@bytecode(code=0x79)
+def lshl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -51,7 +54,8 @@ def op_0x79(frame):  # lshl
     frame.stack.append(result)
 
 
-def op_0x7a(frame):  # ishr
+@bytecode(code=0x7a)
+def ishr(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -63,7 +67,8 @@ def op_0x7a(frame):  # ishr
     frame.stack.append(result)
 
 
-def op_0x7b(frame):  # lshr
+@bytecode(code=0x7b)
+def lshr(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -75,7 +80,8 @@ def op_0x7b(frame):  # lshr
     frame.stack.append(result)
 
 
-def op_0x7c(frame):  # iushr
+@bytecode(code=0x7c)
+def iushr(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -90,7 +96,8 @@ def op_0x7c(frame):  # iushr
     frame.stack.append(result)
 
 
-def op_0x7d(frame):  # lushr
+@bytecode(code=0x7d)
+def lushr(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value1)
@@ -106,7 +113,8 @@ def op_0x7d(frame):  # lushr
     frame.stack.append(result)
 
 
-def op_0x7e(frame):  # iand
+@bytecode(code=0x7e)
+def iand(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -117,7 +125,8 @@ def op_0x7e(frame):  # iand
     frame.stack.append(result)
 
 
-def op_0x7f(frame):  # land
+@bytecode(code=0x7f)
+def land(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value2)
@@ -128,7 +137,8 @@ def op_0x7f(frame):  # land
     frame.stack.append(result)
 
 
-def op_0x80(frame):  # ior
+@bytecode(code=0x80)
+def ior(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)
@@ -139,7 +149,8 @@ def op_0x80(frame):  # ior
     frame.stack.append(result)
 
 
-def op_0x81(frame):  # lor
+@bytecode(code=0x81)
+def lor(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value2)
@@ -150,7 +161,8 @@ def op_0x81(frame):  # lor
     frame.stack.append(result)
 
 
-def op_0x82(frame):  # ixor
+@bytecode(code=0x82)
+def ixor(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_int(value2)

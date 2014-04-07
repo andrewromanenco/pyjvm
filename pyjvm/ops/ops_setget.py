@@ -18,6 +18,7 @@
 import logging
 import struct
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_double
 from pyjvm.jassert import jassert_int
@@ -27,86 +28,105 @@ from pyjvm.jassert import jassert_ref
 logger = logging.getLogger(__name__)
 
 
-def op_0x0(frame):  # nop
+@bytecode(code=0x0)
+def nop(frame):
     # BEST OP CODE, yes - it asks to do nothing
     pass
 
 
-def op_0x1(frame):  # aconst_null
+@bytecode(code=0x1)
+def aconst_null(frame):
     frame.stack.append(None)
 
 
-def op_0x2(frame):  # iconst_m1
+@bytecode(code=0x2)
+def iconst_m1(frame):
     frame.stack.append(-1)
 
 
-def op_0x3(frame):  # iconst_0
+@bytecode(code=0x3)
+def iconst_0(frame):
     frame.stack.append(0)
 
 
-def op_0x4(frame):  # iconst_1
+@bytecode(code=0x4)
+def iconst_1(frame):
     frame.stack.append(1)
 
 
-def op_0x5(frame):  # iconst_2
+@bytecode(code=0x5)
+def iconst_2(frame):
     frame.stack.append(2)
 
 
-def op_0x6(frame):  # iconst_3
+@bytecode(code=0x6)
+def iconst_3(frame):
     frame.stack.append(3)
 
 
-def op_0x7(frame):  # iconst_4
+@bytecode(code=0x7)
+def iconst_4(frame):
     frame.stack.append(4)
 
 
-def op_0x8(frame):  # iconst_5
+@bytecode(code=0x8)
+def iconst_5(frame):
     frame.stack.append(5)
 
 
-def op_0x9(frame):  # lconst_0
+@bytecode(code=0x9)
+def lconst_0(frame):
     frame.stack.append(("long", 0))
 
 
-def op_0xa(frame):  # lconst_1
+@bytecode(code=0xa)
+def lconst_1(frame):
     frame.stack.append(("long", 1))
 
 
-def op_0xb(frame):  # fconst_0
+@bytecode(code=0xb)
+def fconst_0(frame):
     frame.stack.append(("float", 0.0))
 
 
-def op_0xc(frame):  # fconst_1
+@bytecode(code=0xc)
+def fconst_1(frame):
     frame.stack.append(("float", 1.0))
 
 
-def op_0xd(frame):  # fconst_2
+@bytecode(code=0xd)
+def fconst_2(frame):
     frame.stack.append(("float", 2.0))
 
 
-def op_0xe(frame):  # dconst_0
+@bytecode(code=0xe)
+def dconst_0(frame):
     frame.stack.append(("double", 0.0))
 
 
-def op_0xf(frame):  # dconst_1
+@bytecode(code=0xf)
+def dconst_1(frame):
     frame.stack.append(("double", 1.0))
 
 
-def op_0x10(frame):  # bipush: byte to int
+@bytecode(code=0x10)
+def bipush(frame):
     byte = frame.code[frame.pc]
     frame.pc += 1
     value = struct.unpack(">b", byte)[0]
     frame.stack.append(value)
 
 
-def op_0x11(frame):  # sipush: byte to int
+@bytecode(code=0x11)
+def sipush(frame):
     short = struct.unpack(">h", frame.code[frame.pc]
                           + frame.code[frame.pc + 1])[0]
     frame.pc += 2
     frame.stack.append(short)
 
 
-def op_0x12(frame):  # ldc: Str, int, float to stack
+@bytecode(code=0x12)
+def ldc(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     cp_item = frame.this_class.constant_pool[index]
@@ -132,7 +152,8 @@ def op_0x12(frame):  # ldc: Str, int, float to stack
         raise Exception("0x12 not yet supported cp item type: %d" % cp_item[0])
 
 
-def op_0x13(frame):  # ldc_w: Str, int, float to stack
+@bytecode(code=0x13)
+def ldc_w(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]
@@ -158,7 +179,8 @@ def op_0x13(frame):  # ldc_w: Str, int, float to stack
         raise Exception("0x13 not yet supported cp item type: %d" % cp_item[0])
 
 
-def op_0x14(frame):  # ldc2_w
+@bytecode(code=0x14)
+def ldc2_w(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]
@@ -171,7 +193,8 @@ def op_0x14(frame):  # ldc2_w
         raise Exception(cp_item)
 
 
-def op_0x15(frame):  # iload
+@bytecode(code=0x15)
+def iload(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.args[index]
@@ -179,7 +202,8 @@ def op_0x15(frame):  # iload
     frame.stack.append(value)
 
 
-def op_0x16(frame):  # lload
+@bytecode(code=0x16)
+def lload(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.args[index]
@@ -187,7 +211,8 @@ def op_0x16(frame):  # lload
     frame.stack.append(value)
 
 
-def op_0x17(frame):  # fload
+@bytecode(code=0x17)
+def fload(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.args[index]
@@ -195,7 +220,8 @@ def op_0x17(frame):  # fload
     frame.stack.append(value)
 
 
-def op_0x18(frame):  # dload
+@bytecode(code=0x18)
+def dload(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.args[index]
@@ -203,7 +229,8 @@ def op_0x18(frame):  # dload
     frame.stack.append(value)
 
 
-def op_0x19(frame):  # aload
+@bytecode(code=0x19)
+def aload(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.args[index]
@@ -211,127 +238,148 @@ def op_0x19(frame):  # aload
     frame.stack.append(value)
 
 
-def op_0x1a(frame):  # iload_0
+@bytecode(code=0x1a)
+def iload_0(frame):
     value = frame.args[0]
     jassert_int(value)
     frame.stack.append(value)
 
 
-def op_0x1b(frame):  # iload_1
+@bytecode(code=0x1b)
+def iload_1(frame):
     value = frame.args[1]
     jassert_int(value)
     frame.stack.append(value)
 
 
-def op_0x1c(frame):  # iload_2
+@bytecode(code=0x1c)
+def iload_2(frame):
     value = frame.args[2]
     jassert_int(value)
     frame.stack.append(value)
 
 
-def op_0x1d(frame):  # iload_3
+@bytecode(code=0x1d)
+def iload_3(frame):
     value = frame.args[3]
     jassert_int(value)
     frame.stack.append(value)
 
 
-def op_0x1e(frame):  # lload_0
+@bytecode(code=0x1e)
+def lload_0(frame):
     value = frame.args[0]
     jassert_long(value)
     frame.stack.append(value)
 
 
-def op_0x1f(frame):  # lload_1
+@bytecode(code=0x1f)
+def lload_1(frame):
     value = frame.args[1]
     jassert_long(value)
     frame.stack.append(value)
 
 
-def op_0x20(frame):  # lload_2
+@bytecode(code=0x20)
+def lload_2(frame):
     value = frame.args[2]
     jassert_long(value)
     frame.stack.append(value)
 
 
-def op_0x21(frame):  # lload_3
+@bytecode(code=0x21)
+def lload_3(frame):
     value = frame.args[3]
     jassert_long(value)
     frame.stack.append(value)
 
 
-def op_0x22(frame):  # fload_0
+@bytecode(code=0x22)
+def fload_0(frame):
     value = frame.args[0]
     jassert_float(value)
     frame.stack.append(value)
 
 
-def op_0x23(frame):  # fload_1
+@bytecode(code=0x23)
+def fload_1(frame):
     value = frame.args[1]
     jassert_float(value)
     frame.stack.append(value)
 
 
-def op_0x24(frame):  # fload_2
+@bytecode(code=0x24)
+def fload_2(frame):
     value = frame.args[2]
     jassert_float(value)
     frame.stack.append(value)
 
 
-def op_0x25(frame):  # fload_3
+@bytecode(code=0x25)
+def fload_3(frame):
     value = frame.args[3]
     jassert_float(value)
     frame.stack.append(value)
 
 
-def op_0x26(frame):  # dload_0
+@bytecode(code=0x26)
+def dload_0(frame):
     value = frame.args[0]
     jassert_double(value)
     frame.stack.append(value)
 
 
-def op_0x27(frame):  # dload_1
+@bytecode(code=0x27)
+def dload_1(frame):
     value = frame.args[1]
     jassert_double(value)
     frame.stack.append(value)
 
 
-def op_0x28(frame):  # dload_2
+@bytecode(code=0x28)
+def dload_2(frame):
     value = frame.args[2]
     jassert_double(value)
     frame.stack.append(value)
 
 
-def op_0x29(frame):  # dload_3
+@bytecode(code=0x29)
+def dload_3(frame):
     value = frame.args[3]
     jassert_double(value)
     frame.stack.append(value)
 
 
-def op_0x2a(frame):  # aload_0
+@bytecode(code=0x2a)
+def aload_0(frame):
     value = frame.args[0]
     jassert_ref(value)
     frame.stack.append(value)
 
 
-def op_0x2b(frame):  # aload_1
+@bytecode(code=0x2b)
+def aload_1(frame):
     value = frame.args[1]
     jassert_ref(value)
     frame.stack.append(value)
 
 
-def op_0x2c(frame):  # aload_2
+@bytecode(code=0x2c)
+def aload_2(frame):
     value = frame.args[2]
     jassert_ref(value)
     frame.stack.append(value)
 
 
-def op_0x2d(frame):  # aload_3
+@bytecode(code=0x2d)
+def aload_3(frame):
     value = frame.args[3]
     jassert_ref(value)
     frame.stack.append(value)
 
 
-def op_0x36(frame):  # istore
+@bytecode(code=0x36)
+def istore(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.stack.pop()
@@ -339,7 +387,8 @@ def op_0x36(frame):  # istore
     frame.args[index] = value
 
 
-def op_0x37(frame):  # lstore
+@bytecode(code=0x37)
+def lstore(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.stack.pop()
@@ -347,7 +396,8 @@ def op_0x37(frame):  # lstore
     frame.args[index] = value
 
 
-def op_0x38(frame):  # fstore
+@bytecode(code=0x38)
+def fstore(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.stack.pop()
@@ -355,7 +405,8 @@ def op_0x38(frame):  # fstore
     frame.args[index] = value
 
 
-def op_0x39(frame):  # dstore
+@bytecode(code=0x39)
+def dstore(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.stack.pop()
@@ -363,7 +414,8 @@ def op_0x39(frame):  # dstore
     frame.args[index] = value
 
 
-def op_0x3a(frame):  # astore
+@bytecode(code=0x3a)
+def astore(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     value = frame.stack.pop()
@@ -371,121 +423,141 @@ def op_0x3a(frame):  # astore
     frame.args[index] = value
 
 
-def op_0x3b(frame):  # istore_0
+@bytecode(code=0x3b)
+def istore_0(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.args[0] = value
 
 
-def op_0x3c(frame):  # istore_1
+@bytecode(code=0x3c)
+def istore_1(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.args[1] = value
 
 
-def op_0x3d(frame):  # istore_2
+@bytecode(code=0x3d)
+def istore_2(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.args[2] = value
 
 
-def op_0x3e(frame):  # istore_3
+@bytecode(code=0x3e)
+def istore_3(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.args[3] = value
 
 
-def op_0x3f(frame):  # lstore_0
+@bytecode(code=0x3f)
+def lstore_0(frame):
     value = frame.stack.pop()
     jassert_long(value)
     frame.args[0] = value
 
 
-def op_0x40(frame):  # lstore_1
+@bytecode(code=0x40)
+def lstore_1(frame):
     value = frame.stack.pop()
     jassert_long(value)
     frame.args[1] = value
 
 
-def op_0x41(frame):  # lstore_2
+@bytecode(code=0x41)
+def lstore_2(frame):
     value = frame.stack.pop()
     jassert_long(value)
     frame.args[2] = value
 
 
-def op_0x42(frame):  # lstore_3
+@bytecode(code=0x42)
+def lstore_3(frame):
     value = frame.stack.pop()
     jassert_long(value)
     frame.args[3] = value
 
 
-def op_0x43(frame):  # fstore_0
+@bytecode(code=0x43)
+def fstore_0(frame):
     value = frame.stack.pop()
     jassert_float(value)
     frame.args[0] = value
 
 
-def op_0x44(frame):  # fstore_1
+@bytecode(code=0x44)
+def fstore_1(frame):
     value = frame.stack.pop()
     jassert_float(value)
     frame.args[1] = value
 
 
-def op_0x45(frame):  # fstore_2
+@bytecode(code=0x45)
+def fstore_2(frame):
     value = frame.stack.pop()
     jassert_float(value)
     frame.args[2] = value
 
 
-def op_0x46(frame):  # fstore_3
+@bytecode(code=0x46)
+def fstore_3(frame):
     value = frame.stack.pop()
     jassert_float(value)
     frame.args[3] = value
 
 
-def op_0x47(frame):  # dstore_0
+@bytecode(code=0x47)
+def dstore_0(frame):
     value = frame.stack.pop()
     jassert_double(value)
     frame.args[0] = value
 
 
-def op_0x48(frame):  # dstore_1
+@bytecode(code=0x48)
+def dstore_1(frame):
     value = frame.stack.pop()
     jassert_double(value)
     frame.args[1] = value
 
 
-def op_0x49(frame):  # dstore_2
+@bytecode(code=0x49)
+def dstore_2(frame):
     value = frame.stack.pop()
     jassert_double(value)
     frame.args[2] = value
 
 
-def op_0x4a(frame):  # dstore_3
+@bytecode(code=0x4a)
+def dstore_3(frame):
     value = frame.stack.pop()
     jassert_double(value)
     frame.args[3] = value
 
 
-def op_0x4b(frame):  # astore_0
+@bytecode(code=0x4b)
+def astore_0(frame):
     value = frame.stack.pop()
     jassert_ref(value)
     frame.args[0] = value
 
 
-def op_0x4c(frame):  # astore_1
+@bytecode(code=0x4c)
+def astore_1(frame):
     value = frame.stack.pop()
     jassert_ref(value)
     frame.args[1] = value
 
 
-def op_0x4d(frame):  # astore_2
+@bytecode(code=0x4d)
+def astore_2(frame):
     value = frame.stack.pop()
     jassert_ref(value)
     frame.args[2] = value
 
 
-def op_0x4e(frame):  # astore_3
+@bytecode(code=0x4e)
+def astore_3(frame):
     value = frame.stack.pop()
     jassert_ref(value)
     frame.args[3] = value

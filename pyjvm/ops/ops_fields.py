@@ -17,12 +17,14 @@
 
 import logging
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_ref
 
 logger = logging.getLogger(__name__)
 
 
-def op_0xb2(frame):  # getstatic (a static field to stack)
+@bytecode(code=0xb2)
+def getstatic(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_fieldref = frame.this_class.constant_pool[index]
@@ -45,7 +47,8 @@ def op_0xb2(frame):  # getstatic (a static field to stack)
     frame.stack.append(value)
 
 
-def op_0xb3(frame):  # putstatic (set a static field from stack)
+@bytecode(code=0xb3)
+def putstatic(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_fieldref = frame.this_class.constant_pool[index]
@@ -68,7 +71,8 @@ def op_0xb3(frame):  # putstatic (set a static field from stack)
     klass.static_fields[field_name][1] = value
 
 
-def op_0xb4(frame):  # getfield (from an obj)
+@bytecode(code=0xb4)
+def getfield(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_fieldref = frame.this_class.constant_pool[index]
@@ -99,7 +103,8 @@ def op_0xb4(frame):  # getfield (from an obj)
     frame.stack.append(instance.fields[field_name])
 
 
-def op_0xb5(frame):  # putfield
+@bytecode(code=0xb5)
+def putfield(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_fieldref = frame.this_class.constant_pool[index]
@@ -130,7 +135,8 @@ def op_0xb5(frame):  # putfield
     instance.fields[field_name] = value
 
 
-def op_0xbb(frame):  # new
+@bytecode(code=0xbb)
+def new(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]

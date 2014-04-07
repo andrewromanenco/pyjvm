@@ -17,6 +17,7 @@
 
 import struct
 
+from pyjvm.bytecode import bytecode
 from pyjvm.checkcast import checkcast
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_double
@@ -27,7 +28,8 @@ from pyjvm.jvmo import JavaObject
 from pyjvm.vmo import vmo_check_cast, VM_CLASS_NAMES
 
 
-def op_0x94(frame):  # lcmpl
+@bytecode(code=0x94)
+def lcmpl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value1)
@@ -40,7 +42,8 @@ def op_0x94(frame):  # lcmpl
         frame.stack.append(-1)
 
 
-def op_0x95(frame):  # fcmpl
+@bytecode(code=0x95)
+def fcmpl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -53,7 +56,8 @@ def op_0x95(frame):  # fcmpl
         frame.stack.append(-1)
 
 
-def op_0x96(frame):  # fcmpg
+@bytecode(code=0x96)
+def fcmpg(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -66,7 +70,8 @@ def op_0x96(frame):  # fcmpg
         frame.stack.append(-1)
 
 
-def op_0x97(frame):  # dcmpl
+@bytecode(code=0x97)
+def dcmpl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -79,7 +84,8 @@ def op_0x97(frame):  # dcmpl
         frame.stack.append(-1)
 
 
-def op_0x98(frame):  # dcmpl
+@bytecode(code=0x98)
+def dcmpl(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -92,7 +98,8 @@ def op_0x98(frame):  # dcmpl
         frame.stack.append(-1)
 
 
-def op_0x99(frame):  # if_eq
+@bytecode(code=0x99)
+def if_eq(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -103,7 +110,8 @@ def op_0x99(frame):  # if_eq
         frame.pc += offset - 2 - 1
 
 
-def op_0x9a(frame):  # ifne
+@bytecode(code=0x9a)
+def ifne(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -114,7 +122,8 @@ def op_0x9a(frame):  # ifne
         frame.pc += offset - 2 - 1
 
 
-def op_0x9b(frame):  # iflt
+@bytecode(code=0x9b)
+def iflt(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -125,7 +134,8 @@ def op_0x9b(frame):  # iflt
         frame.pc += offset - 2 - 1
 
 
-def op_0x9c(frame):  # ifge
+@bytecode(code=0x9c)
+def ifge(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -136,7 +146,8 @@ def op_0x9c(frame):  # ifge
         frame.pc += offset - 2 - 1
 
 
-def op_0x9d(frame):  # ifgt
+@bytecode(code=0x9d)
+def ifgt(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -147,7 +158,8 @@ def op_0x9d(frame):  # ifgt
         frame.pc += offset - 2 - 1
 
 
-def op_0x9e(frame):  # ifle
+@bytecode(code=0x9e)
+def ifle(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -158,7 +170,8 @@ def op_0x9e(frame):  # ifle
         frame.pc += offset - 2 - 1
 
 
-def op_0x9f(frame):  # if_icmpeq
+@bytecode(code=0x9f)
+def if_icmpeq(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -171,7 +184,8 @@ def op_0x9f(frame):  # if_icmpeq
         frame.pc += offset - 2 - 1
 
 
-def op_0xa0(frame):  # if_icmpne
+@bytecode(code=0xa0)
+def if_icmpne(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -184,7 +198,8 @@ def op_0xa0(frame):  # if_icmpne
         frame.pc += offset - 2 - 1
 
 
-def op_0xa1(frame):  # if_icmplt
+@bytecode(code=0xa1)
+def if_icmplt(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -197,7 +212,8 @@ def op_0xa1(frame):  # if_icmplt
         frame.pc += offset - 2 - 1
 
 
-def op_0xa2(frame):  # if_icmpge
+@bytecode(code=0xa2)
+def if_icmpge(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -210,7 +226,8 @@ def op_0xa2(frame):  # if_icmpge
         frame.pc += offset - 2 - 1
 
 
-def op_0xa3(frame):  # if_icmpgt
+@bytecode(code=0xa3)
+def if_icmpgt(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -223,7 +240,8 @@ def op_0xa3(frame):  # if_icmpgt
         frame.pc += offset - 2 - 1
 
 
-def op_0xa4(frame):  # if_icmple
+@bytecode(code=0xa4)
+def if_icmple(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -236,7 +254,8 @@ def op_0xa4(frame):  # if_icmple
         frame.pc += offset - 2 - 1
 
 
-def op_0xa5(frame):  # if_acmpeq
+@bytecode(code=0xa5)
+def if_acmpeq(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -249,7 +268,8 @@ def op_0xa5(frame):  # if_acmpeq
         frame.pc += offset - 2 - 1
 
 
-def op_0xa6(frame):  # if_acmpne
+@bytecode(code=0xa6)
+def if_acmpne(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -262,14 +282,16 @@ def op_0xa6(frame):  # if_acmpne
         frame.pc += offset - 2 - 1
 
 
-def op_0xa7(frame):  # goto
+@bytecode(code=0xa7)
+def goto(frame):
     data = frame.code[frame.pc:frame.pc + 2]
     frame.pc += 2
     offset = struct.unpack(">h", data)[0]
     frame.pc += offset - 2 - 1
 
 
-def op_0xa8(frame):  # jsr
+@bytecode(code=0xa8)
+def jsr(frame):
     frame.stack.append(frame.pc + 2)
     data = frame.code[frame.pc:frame.pc + 2]
     frame.pc += 2
@@ -277,7 +299,8 @@ def op_0xa8(frame):  # jsr
     frame.pc += offset - 2 - 1
 
 
-def op_0xaa(frame):  # tableswitch
+@bytecode(code=0xaa)
+def tableswitch(frame):
     index = frame.stack.pop()
     jassert_int(index)
     last_pc = frame.pc - 1
@@ -301,7 +324,8 @@ def op_0xaa(frame):  # tableswitch
     frame.pc = last_pc + offsets[index - low]
 
 
-def op_0xab(frame):  # lookupswitch
+@bytecode(code=0xab)
+def lookupswitch(frame):
     key = frame.stack.pop()
     last_pc = frame.pc - 1
     while frame.pc % 4 != 0:
@@ -326,7 +350,8 @@ def op_0xab(frame):  # lookupswitch
     frame.pc = last_pc + default
 
 
-def op_0xc6(frame):  # ifnull
+@bytecode(code=0xc6)
+def ifnull(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -337,7 +362,8 @@ def op_0xc6(frame):  # ifnull
         frame.pc += offset - 2 - 1
 
 
-def op_0xc7(frame):  # ifnonnull
+@bytecode(code=0xc7)
+def ifnonnull(frame):
     byte1 = ord(frame.code[frame.pc])
     byte2 = ord(frame.code[frame.pc + 1])
     frame.pc += 2
@@ -348,7 +374,8 @@ def op_0xc7(frame):  # ifnonnull
         frame.pc += offset - 2 - 1
 
 
-def op_0xc0(frame):  # checkcast
+@bytecode(code=0xc0)
+def checkcast(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     ref = frame.stack.pop()
@@ -372,7 +399,8 @@ def op_0xc0(frame):  # checkcast
         frame.vm.raise_exception(frame, "java/lang/ClassCastException")
 
 
-def op_0xc1(frame):  # instanceof
+@bytecode(code=0xc1)
+def instanceof(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     ref = frame.stack.pop()
@@ -397,14 +425,16 @@ def op_0xc1(frame):  # instanceof
         frame.stack.append(0)
 
 
-def op_0xc8(frame):  # goto_w
+@bytecode(code=0xc8)
+def goto_w(frame):
     data = frame.code[frame.pc:frame.pc + 4]
     frame.pc += 4
     offset = struct.unpack(">i", data)[0]
     frame.pc += offset - 4 - 1
 
 
-def op_0xc9(frame):  # jsr_w
+@bytecode(code=0xc9)
+def jsr_w(frame):
     frame.stack.append(frame.pc + 4)
     data = frame.code[frame.pc:frame.pc + 4]
     frame.pc += 4

@@ -18,6 +18,7 @@
 import logging
 import struct
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_double
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_int
@@ -57,7 +58,8 @@ def cut_to_long(value):
     return long(value)
 
 
-def op_0x60(frame):  # iadd
+@bytecode(code=0x60)
+def iadd(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1 + value2
@@ -66,7 +68,8 @@ def op_0x60(frame):  # iadd
     frame.stack.append(result)
 
 
-def op_0x61(frame):  # ladd
+@bytecode(code=0x61)
+def ladd(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1[1] + value2[1]
@@ -74,7 +77,8 @@ def op_0x61(frame):  # ladd
     frame.stack.append(("long", result))
 
 
-def op_0x62(frame):  # fadd
+@bytecode(code=0x62)
+def fadd(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -83,7 +87,8 @@ def op_0x62(frame):  # fadd
     frame.stack.append(("float", result))
 
 
-def op_0x63(frame):  # dadd
+@bytecode(code=0x63)
+def dadd(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -92,7 +97,8 @@ def op_0x63(frame):  # dadd
     frame.stack.append(("double", result))
 
 
-def op_0x64(frame):  # isub
+@bytecode(code=0x64)
+def isub(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1 - value2
@@ -100,7 +106,8 @@ def op_0x64(frame):  # isub
     frame.stack.append(result)
 
 
-def op_0x65(frame):  # lsub
+@bytecode(code=0x65)
+def lsub(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1[1] - value2[1]
@@ -108,7 +115,8 @@ def op_0x65(frame):  # lsub
     frame.stack.append(("long", result))
 
 
-def op_0x66(frame):  # fsub
+@bytecode(code=0x66)
+def fsub(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -117,7 +125,8 @@ def op_0x66(frame):  # fsub
     frame.stack.append(("float", result))
 
 
-def op_0x67(frame):  # dsub
+@bytecode(code=0x67)
+def dsub(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -126,7 +135,8 @@ def op_0x67(frame):  # dsub
     frame.stack.append(("double", result))
 
 
-def op_0x68(frame):  # imul
+@bytecode(code=0x68)
+def imul(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1 * value2
@@ -134,7 +144,8 @@ def op_0x68(frame):  # imul
     frame.stack.append(result)
 
 
-def op_0x69(frame):  # lmul
+@bytecode(code=0x69)
+def lmul(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     result = value1[1] * value2[1]
@@ -142,7 +153,8 @@ def op_0x69(frame):  # lmul
     frame.stack.append(("long", result))
 
 
-def op_0x6a(frame):  # fmul
+@bytecode(code=0x6a)
+def fmul(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -152,7 +164,8 @@ def op_0x6a(frame):  # fmul
     frame.stack.append(("float", result))
 
 
-def op_0x6b(frame):  # dmul
+@bytecode(code=0x6b)
+def dmul(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -161,7 +174,8 @@ def op_0x6b(frame):  # dmul
     frame.stack.append(("double", result))
 
 
-def op_0x6c(frame):  # idiv
+@bytecode(code=0x6c)
+def idiv(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     if value2 == 0:
@@ -172,7 +186,8 @@ def op_0x6c(frame):  # idiv
     frame.stack.append(result)
 
 
-def op_0x6d(frame):  # ldiv
+@bytecode(code=0x6d)
+def ldiv(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value1)
@@ -188,7 +203,8 @@ def op_0x6d(frame):  # ldiv
     frame.stack.append(("long", long(result)))
 
 
-def op_0x6e(frame):  # fdiv
+@bytecode(code=0x6e)
+def fdiv(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_float(value1)
@@ -200,7 +216,8 @@ def op_0x6e(frame):  # fdiv
     frame.stack.append(("float", result))
 
 
-def op_0x6f(frame):  # ddiv
+@bytecode(code=0x6f)
+def ddiv(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_double(value1)
@@ -212,7 +229,8 @@ def op_0x6f(frame):  # ddiv
     frame.stack.append(("double", result))
 
 
-def op_0x70(frame):  # irem
+@bytecode(code=0x70)
+def irem(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     if value2 == 0:
@@ -223,7 +241,8 @@ def op_0x70(frame):  # irem
     frame.stack.append(result)
 
 
-def op_0x71(frame):  # lrem
+@bytecode(code=0x71)
+def lrem(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value1)
@@ -236,26 +255,30 @@ def op_0x71(frame):  # lrem
     frame.stack.append(("long", result))
 
 
-def op_0x72(frame):  # frem
+@bytecode(code=0x72)
+def frem(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     frame.stack.append(0)  # hardcoded for now
 
 
-def op_0x73(frame):  # drem
+@bytecode(code=0x73)
+def drem(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     frame.stack.append(0)  # hardcoded for now
 
 
-def op_0x74(frame):  # ineg
+@bytecode(code=0x74)
+def ineg(frame):
     value = frame.stack.pop()
     result = value * -1
     result = cut_to_int(result)
     frame.stack.append(result)
 
 
-def op_0x75(frame):  # lneg
+@bytecode(code=0x75)
+def lneg(frame):
     value = frame.stack.pop()
     jassert_long(value)
     result = value[1] * -1
@@ -263,21 +286,24 @@ def op_0x75(frame):  # lneg
     frame.stack.append(("long", long(result)))
 
 
-def op_0x76(frame):  # fneg
+@bytecode(code=0x76)
+def fneg(frame):
     value = frame.stack.pop()
     jassert_double(value)
     result = value[1] * -1
     frame.stack.append(("float", result))
 
 
-def op_0x77(frame):  # dneg
+@bytecode(code=0x77)
+def dneg(frame):
     value = frame.stack.pop()
     jassert_double(value)
     result = value[1] * -1
     frame.stack.append(("double", result))
 
 
-def op_0x83(frame):  # lxor
+@bytecode(code=0x83)
+def lxor(frame):
     value2 = frame.stack.pop()
     value1 = frame.stack.pop()
     jassert_long(value1)
@@ -287,7 +313,8 @@ def op_0x83(frame):  # lxor
     frame.stack.append(("long", result))
 
 
-def op_0x84(frame):  # iinc
+@bytecode(code=0x84)
+def iinc(frame):
     index = ord(frame.code[frame.pc])
     frame.pc += 1
     vconst = struct.unpack('b', frame.code[frame.pc])[0]
