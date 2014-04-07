@@ -119,12 +119,11 @@ class JavaObject(object):
         '''Init all fields with default values'''
         if jc is None:
             return
-        for name in jc.member_fields:
-            tp = jc.member_fields[name]
-            if tp[0] == 'L':
-                #vm.get_class(tp[1:-1])
-                pass
-            self.fields[name] = default_for_type(jc.member_fields[name])
+
+        fields_ = {key: default_for_type(value) 
+                   for key, value in jc.member_fields.iteritems()  if value[0] != 'L'}
+
+        self.fields.update(fields_)
         self.fill_fields(jc.super_class, vm)
 
     def __str__(self):

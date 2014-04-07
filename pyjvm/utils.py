@@ -15,10 +15,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Common utils"""
 
+DEFAULTS_VALS = {
+    "I": 0,                  #
+    "J": ("long", 0),        # long
+    "[": None,               # array
+    "L": None,               # object
+    "Z": 0,                  # boolean
+    "D": ("double", .0),     # double
+    "F": ("float", .0),      # float
+    "C": 0,                  # char
+    "B": 0,                  # boolean
+}
+
 
 def arr_to_string(str_arr):
     '''Convert string's array to real unicode string'''
-    result_string = ""
     for char_ in str_arr:
         result_string += str(unichr(char_))
     return result_string
@@ -60,32 +71,19 @@ def _args_count(desc):
 
 def default_for_type(desc):
     '''Get default value for specific type'''
-    if desc == "I":
-        return 0
-    elif desc == "J":  # long
-        return ("long", 0)
-    elif desc[0] == "[":  # array
-        return None
-    elif desc[0] == 'L':  # object
-        return None
-    elif desc == 'Z':  # boolean
-        return 0
-    elif desc == 'D':  # double
-        return ("double", 0.0)
-    elif desc == 'F':  # float
-        return ("float", 0.0)
-    elif desc == 'C':  # char
-        return 0
-    elif desc == 'B':  # boolean
-        return 0
-    raise Exception("Default value not yet supported for " + desc)
+    char_ = desc[0]
+    
+    if char_ not in DEFAULTS_VALS:
+        raise Exception("Default value not yet supported for " + desc)
+    
+    return DEFAULTS_VALS.get(char_)     
 
 
 def category_type(value):
     '''Get category type of a variable according to jdk specs
 
     long, double are 2, others are 1'''
-    if type(value) is tuple and value[0] in ('long', 'double'):
+    if isinstance(value, tuple) is tuple and value[0] in ('long', 'double'):
         return 2
-    else:
-        return 1
+    
+    return 1

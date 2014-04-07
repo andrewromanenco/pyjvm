@@ -149,7 +149,7 @@ class VM(object):
         pvm_thread = Thread(self, t_ref)
         pvm_thread.is_alive = True
         method = tg_klass.find_method("add", "(Ljava/lang/Thread;)V")
-        args = [None]*method[1]
+        args = [None] * method[1]
         args[0] = tg_ref
         args[1] = t_ref
         frame = Frame(pvm_thread, tg_klass, method, args, "system tg init")
@@ -218,7 +218,7 @@ class VM(object):
         logger.debug("Class {0} not yet ready".format(class_name))
         java_class = class_loader(class_name, self.class_path)
         super_class = java_class.super_class
-        if type(super_class) is unicode:  # lame check
+        if isinstance(super_class, unicode):  # lame check
             super_class = self.get_class(super_class)
             java_class.super_class = super_class
         logger.debug("Loaded class def\n{0}".format(java_class))
@@ -290,9 +290,9 @@ class VM(object):
         '''
         if value in self.global_strings:
             return self.global_strings[value]
-        values = []
-        for c in value:
-            values.append(ord(c))
+
+        values = [ord(c) for c in value]
+
         array_class = self.get_class("[C")
         array = JArray(array_class, self)
         array.values = values
@@ -432,7 +432,7 @@ class VM(object):
         ref = self.add_to_heap(ex)
 
         method = ex_klass.find_method("<init>", "()V")
-        m_args = [None]*method[1]
+        m_args = [None] * method[1]
         m_args[0] = ref
 
         pvm_thread = Thread(self, None)
