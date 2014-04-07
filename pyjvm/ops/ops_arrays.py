@@ -17,6 +17,7 @@
 
 import logging
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_array
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_double
@@ -28,7 +29,8 @@ from pyjvm.jvmo import JArray
 logger = logging.getLogger(__name__)
 
 
-def op_0x2e(frame):  # iaload
+@bytecode(code=0x2e)
+def iaload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -46,7 +48,8 @@ def op_0x2e(frame):  # iaload
     frame.stack.append(values[index])
 
 
-def op_0x2f(frame):  # laload
+@bytecode(code=0x2f)
+def laload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -64,7 +67,8 @@ def op_0x2f(frame):  # laload
     frame.stack.append(values[index])
 
 
-def op_0x30(frame):  # faload
+@bytecode(code=0x30)
+def faload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -82,7 +86,8 @@ def op_0x30(frame):  # faload
     frame.stack.append(values[index])
 
 
-def op_0x31(frame):  # daload
+@bytecode(code=0x31)
+def daload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -100,7 +105,8 @@ def op_0x31(frame):  # daload
     frame.stack.append(values[index])
 
 
-def op_0x32(frame):  # aaload
+@bytecode(code=0x32)
+def aaload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -117,25 +123,8 @@ def op_0x32(frame):  # aaload
     frame.stack.append(values[index])
 
 
-def op_0x33(frame):  # baload
-    index = frame.stack.pop()
-    ref = frame.stack.pop()
-    jassert_int(index)
-    if ref is None:
-        frame.vm.raise_exception(frame, "java/lang/NullPointerException")
-        return
-    jassert_ref(ref)
-    array = frame.vm.heap[ref[1]]
-    jassert_array(array)
-    values = array.values
-    if index < 0 or index >= len(values):
-        frame.vm.raise_exception(frame,
-                                 "java/lang/ArrayIndexOutOfBoundsException")
-        return
-    frame.stack.append(values[index])
-
-
-def op_0x34(frame):  # caload
+@bytecode(code=0x33)
+def baload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -153,7 +142,8 @@ def op_0x34(frame):  # caload
     frame.stack.append(values[index])
 
 
-def op_0x35(frame):  # saload
+@bytecode(code=0x34)
+def caload(frame):
     index = frame.stack.pop()
     ref = frame.stack.pop()
     jassert_int(index)
@@ -171,7 +161,27 @@ def op_0x35(frame):  # saload
     frame.stack.append(values[index])
 
 
-def op_0x4f(frame):  # iastore
+@bytecode(code=0x35)
+def saload(frame):
+    index = frame.stack.pop()
+    ref = frame.stack.pop()
+    jassert_int(index)
+    if ref is None:
+        frame.vm.raise_exception(frame, "java/lang/NullPointerException")
+        return
+    jassert_ref(ref)
+    array = frame.vm.heap[ref[1]]
+    jassert_array(array)
+    values = array.values
+    if index < 0 or index >= len(values):
+        frame.vm.raise_exception(frame,
+                                 "java/lang/ArrayIndexOutOfBoundsException")
+        return
+    frame.stack.append(values[index])
+
+
+@bytecode(code=0x4f)
+def iastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -191,7 +201,8 @@ def op_0x4f(frame):  # iastore
     values[index] = value
 
 
-def op_0x50(frame):  # lastore
+@bytecode(code=0x50)
+def lastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -211,7 +222,8 @@ def op_0x50(frame):  # lastore
     values[index] = value
 
 
-def op_0x51(frame):  # fastore
+@bytecode(code=0x51)
+def fastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -231,7 +243,8 @@ def op_0x51(frame):  # fastore
     values[index] = value
 
 
-def op_0x52(frame):  # dastore
+@bytecode(code=0x52)
+def dastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -251,7 +264,8 @@ def op_0x52(frame):  # dastore
     values[index] = value
 
 
-def op_0x53(frame):  # aastore
+@bytecode(code=0x53)
+def aastore(frame):
     # TODO ArrayStoreException
     value = frame.stack.pop()
     index = frame.stack.pop()
@@ -271,7 +285,8 @@ def op_0x53(frame):  # aastore
     values[index] = value
 
 
-def op_0x54(frame):  # bastore
+@bytecode(code=0x54)
+def bastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -291,7 +306,8 @@ def op_0x54(frame):  # bastore
     values[index] = value
 
 
-def op_0x55(frame):  # castore
+@bytecode(code=0x55)
+def castore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -311,7 +327,8 @@ def op_0x55(frame):  # castore
     values[index] = value
 
 
-def op_0x56(frame):  # sastore
+@bytecode(code=0x56)
+def sastore(frame):
     value = frame.stack.pop()
     index = frame.stack.pop()
     ref = frame.stack.pop()
@@ -331,7 +348,8 @@ def op_0x56(frame):  # sastore
     values[index] = value
 
 
-def op_0xbc(frame):  # newarray (array of primitives)
+@bytecode(code=0xbc)
+def newarray(frame):
     atype = ord(frame.code[frame.pc])
     frame.pc += 1
     count = frame.stack.pop()
@@ -360,7 +378,8 @@ def op_0xbc(frame):  # newarray (array of primitives)
     frame.stack.append(ref)
 
 
-def op_0xbd(frame):  # anewarray (array of refs)
+@bytecode(code=0xbd)
+def anewarray(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]
@@ -383,7 +402,8 @@ def op_0xbd(frame):  # anewarray (array of refs)
     frame.stack.append(ref)
 
 
-def op_0xbe(frame):  # arraylength
+@bytecode(code=0xbe)
+def arraylength(frame):
     ref = frame.stack.pop()
     if ref is None:
         frame.vm.raise_exception(frame, "java/lang/NullPointerException")
@@ -395,7 +415,8 @@ def op_0xbe(frame):  # arraylength
     frame.stack.append(length)
 
 
-def op_0xc5(frame):  # multianewarray
+@bytecode(code=0xc5)
+def multianewarray(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     dims = ord(frame.code[frame.pc])

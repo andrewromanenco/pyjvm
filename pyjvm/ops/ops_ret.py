@@ -17,6 +17,7 @@
 
 import logging
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_double
 from pyjvm.jassert import jassert_int
@@ -27,7 +28,8 @@ from pyjvm.throw import JavaException
 logger = logging.getLogger(__name__)
 
 
-def op_0xac(frame):  # ireturn
+@bytecode(code=0xac)
+def ireturn(frame):
     value = frame.stack.pop()
     logger.debug("To be returned {0}".format(value))
     jassert_int(value)
@@ -36,7 +38,8 @@ def op_0xac(frame):  # ireturn
     frame.pc = len(frame.code) + 1
 
 
-def op_0xad(frame):  # lreturn
+@bytecode(code=0xad)
+def lreturn(frame):
     value = frame.stack.pop()
     logger.debug("To be returned {0}".format(value))
     jassert_long(value)
@@ -45,7 +48,8 @@ def op_0xad(frame):  # lreturn
     frame.pc = len(frame.code) + 1
 
 
-def op_0xae(frame):  # freturn
+@bytecode(code=0xae)
+def freturn(frame):
     value = frame.stack.pop()
     logger.debug("To be returned {0}".format(value))
     jassert_float(value)
@@ -54,7 +58,8 @@ def op_0xae(frame):  # freturn
     frame.pc = len(frame.code) + 1
 
 
-def op_0xaf(frame):  # dreturn
+@bytecode(code=0xaf)
+def dreturn(frame):
     value = frame.stack.pop()
     logger.debug("To be returned {0}".format(value))
     jassert_double(value)
@@ -63,7 +68,8 @@ def op_0xaf(frame):  # dreturn
     frame.pc = len(frame.code) + 1
 
 
-def op_0xb0(frame):  # areturn
+@bytecode(code=0xb0)
+def areturn(frame):
     value = frame.stack.pop()
     jassert_ref(value)
     frame.ret = value
@@ -71,11 +77,13 @@ def op_0xb0(frame):  # areturn
     frame.pc = len(frame.code) + 1
 
 
-def op_0xb1(frame):  # return (from void)
+@bytecode(code=0xb1)
+def return_(frame):
     frame.pc = len(frame.code) + 1
 
 
-def op_0xbf(frame):  # athrow
+@bytecode(code=0xbf)
+def athrow(frame):
     ref = frame.stack.pop()
     if ref is None:
         frame.vm.raise_exception(frame, "java/lang/NullPointerException")
