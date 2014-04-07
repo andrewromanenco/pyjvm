@@ -17,6 +17,7 @@
 
 import logging
 
+from pyjvm.bytecode import bytecode
 from pyjvm.frame import Frame
 from pyjvm.jassert import jassert_ref
 from pyjvm.natives import exec_native
@@ -26,7 +27,8 @@ from pyjvm.utils import args_count
 logger = logging.getLogger(__name__)
 
 
-def op_0xb7(frame):  # invokespecial
+@bytecode(code=0xb7)
+def invokespecial(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]

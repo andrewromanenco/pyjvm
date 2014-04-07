@@ -18,32 +18,37 @@
 import math
 import struct
 
+from pyjvm.bytecode import bytecode
 from pyjvm.jassert import jassert_float
 from pyjvm.jassert import jassert_double
 from pyjvm.jassert import jassert_int
 from pyjvm.jassert import jassert_long
 
 
-def op_0x85(frame):  # i2l
+@bytecode(code=0x85)
+def i2l(frame):
     value = frame.stack.pop()
     jassert_int(value)
     value = long(value)  # no real need
     frame.stack.append(("long", value))
 
 
-def op_0x86(frame):  # i2f
+@bytecode(code=0x86)
+def i2f(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.stack.append(("float", float(value)))
 
 
-def op_0x87(frame):  # i2d
+@bytecode(code=0x87)
+def i2d(frame):
     value = frame.stack.pop()
     jassert_int(value)
     frame.stack.append(("double", float(value)))
 
 
-def op_0x88(frame):  # l2i
+@bytecode(code=0x88)
+def l2i(frame):
     value = frame.stack.pop()
     jassert_long(value)
     data = struct.pack(">q", value[1])
@@ -53,21 +58,24 @@ def op_0x88(frame):  # l2i
     frame.stack.append(result)
 
 
-def op_0x89(frame):  # l2f
+@bytecode(code=0x89)
+def l2f(frame):
     value = frame.stack.pop()
     jassert_long(value)
     result = ("float", float(value[1]))
     frame.stack.append(result)
 
 
-def op_0x8a(frame):  # l2d
+@bytecode(code=0x8a)
+def l2d(frame):
     value = frame.stack.pop()
     jassert_long(value)
     result = ("double", float(value[1]))
     frame.stack.append(result)
 
 
-def op_0x8b(frame):  # f2i
+@bytecode(code=0x8b)
+def f2i(frame):
     value = frame.stack.pop()
     jassert_float(value)
     if value[1] is None:
@@ -83,7 +91,8 @@ def op_0x8b(frame):  # f2i
         frame.stack.append(result)
 
 
-def op_0x8c(frame):  # f2l
+@bytecode(code=0x8c)
+def f2l(frame):
     value = frame.stack.pop()
     jassert_float(value)
     if value[1] is None:
@@ -101,13 +110,15 @@ def op_0x8c(frame):  # f2l
         frame.stack.append(("long", result))
 
 
-def op_0x8d(frame):  # f2d
+@bytecode(code=0x8d)
+def f2d(frame):
     value = frame.stack.pop()
     jassert_float(value)
     frame.stack.append(("double", value[1]))
 
 
-def op_0x8e(frame):  # d2i
+@bytecode(code=0x8e)
+def d2i(frame):
     value = frame.stack.pop()
     jassert_double(value)
     if value[1] is None:
@@ -123,7 +134,8 @@ def op_0x8e(frame):  # d2i
         frame.stack.append(result)
 
 
-def op_0x8f(frame):  # d2l
+@bytecode(code=0x8f)
+def d2l(frame):
     value = frame.stack.pop()
     jassert_double(value)
     if value[1] is None:
@@ -141,13 +153,15 @@ def op_0x8f(frame):  # d2l
         frame.stack.append(("long", result))
 
 
-def op_0x90(frame):  # d2f
+@bytecode(code=0x90)
+def d2f(frame):
     value = frame.stack.pop()
     jassert_double(value)
     frame.stack.append(("float", value[1]))
 
 
-def op_0x91(frame):  # i2b
+@bytecode(code=0x91)
+def i2b(frame):
     value = frame.stack.pop()
     jassert_int(value)
     data = struct.pack(">i", value)
@@ -156,7 +170,8 @@ def op_0x91(frame):  # i2b
     frame.stack.append(result)
 
 
-def op_0x92(frame):  # i2c
+@bytecode(code=0x92)
+def i2c(frame):
     value = frame.stack.pop()
     jassert_int(value)
     data = struct.pack(">i", value)
@@ -167,7 +182,8 @@ def op_0x92(frame):  # i2c
     frame.stack.append(result)
 
 
-def op_0x93(frame):  # i2s
+@bytecode(code=0x93)
+def i2s(frame):
     value = frame.stack.pop()
     jassert_int(value)
     data = struct.pack(">i", value)
