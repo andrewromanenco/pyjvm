@@ -136,7 +136,7 @@ def putfield(frame):
 
 
 @bytecode(code=0xbb)
-def new(frame):
+def new_(frame):
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     cp_item = frame.this_class.constant_pool[index]
