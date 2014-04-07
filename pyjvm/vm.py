@@ -446,4 +446,4 @@ class VM(object):
         self.run_thread(pvm_thread)
 
         frame.stack.append(ref)
-        op_0xbf(frame)
+        get_operation('0xbf')(frame)

@@ -375,7 +375,7 @@ def ifnonnull(frame):
 
 
 @bytecode(code=0xc0)
-def checkcast(frame):
+def checkcast_(frame):   # FIXME: rename pyjvm.checkcast and rename this func to checkcast 
     index = (ord(frame.code[frame.pc]) << 8) + ord(frame.code[frame.pc + 1])
     frame.pc += 2
     ref = frame.stack.pop()
