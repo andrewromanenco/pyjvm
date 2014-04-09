@@ -34,7 +34,7 @@ from pyjvm.class_path import read_class_path
 from pyjvm.jvmo import JArray
 from pyjvm.vm import vm_factory
 
-SERIALIZATION_ID = 1  # inc for each VM init process update
+SERIALIZATION_ID = 2  # inc for each VM init process update
 
 logger = logging.getLogger(__name__)
 
