@@ -28,6 +28,7 @@ from pyjvm.platform.java.lang.thread import *
 from pyjvm.platform.java.lang.throwable import *
 from pyjvm.platform.java.io.filedescriptor import *
 from pyjvm.platform.java.io.fileinputstream import *
+from pyjvm.platform.java.io.fileoutputstream import *
 from pyjvm.platform.java.io.filesystem import *
 from pyjvm.platform.java.security.accesscontroller import *
 from pyjvm.platform.sun.misc.unsafe import *
