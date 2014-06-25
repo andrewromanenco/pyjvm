@@ -23,7 +23,7 @@ See START.txt for details
 '''
 
 import os
-import zipfile
+from pyjvm import jarfile
 
 
 def read_class_path(class_path):
@@ -54,9 +54,6 @@ def read_class_path(class_path):
             if not os.path.exists(RT_JAR) or os.path.isdir(RT_JAR):
                 raise Exception("rt.jar not found")
 
-    if not zipfile.is_zipfile(RT_JAR):
-        raise Exception("rt.jar is not a zip: %s" % RT_JAR)
-
     read_from_jar(RT_JAR, rt)
 
     current = os.getcwd()
@@ -80,19 +77,13 @@ def read_class_path(class_path):
         if os.path.isdir(path):
             lookup_paths.append(path)
         else:
-            if zipfile.is_zipfile(path):
-                read_from_jar(path, jars)
-            else:
-                raise Exception("Class path entry %s is not a jar file" % path)
+            read_from_jar(path, jars)
 
     return (lookup_paths, jars, rt)
 
 
 def read_from_jar(jar, dict_data):
     '''Read file list from a jar'''
-    if not zipfile.is_zipfile(jar):
-        raise Exception("Not a jar file: %s" % jar)
-    with zipfile.ZipFile(jar, "r") as j:
-        for name in j.namelist():
-            if name.endswith(".class"):  # at some point save all files
-                dict_data[name] = jar
+    classes = jarfile.get_content(jar, lambda name: name.endswith(".class"))
+    for class_ in classes:
+        dict_data[class_] = jar

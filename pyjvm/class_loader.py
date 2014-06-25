@@ -18,7 +18,7 @@
 import logging
 import os
 import struct
-import zipfile
+from pyjvm import jarfile
 
 from pyjvm.jvmo import JavaClass
 
@@ -34,16 +34,16 @@ def class_loader(class_name, (lookup_paths, jars, rt)):
     assert class_name[0] != '['  # no arrays
     file_path = class_name + ".class"
     f = None
-    zip_file = None
+    jar_file = None
     if file_path in rt:
         path = rt[file_path]
-        zip_file = zipfile.ZipFile(path, "r")
-        f = zip_file.open(file_path)
+        jar_file = jarfile.jar(path)
+        f = jar_file.open(file_path)
         logger.debug("Loading %s from %s", file_path, path)
     elif file_path in jars:
         path = jars[file_path]
-        zip_file = zipfile.ZipFile(path, "r")
-        f = zip_file.open(file_path)
+        jar_file = jarfile.jar(path)
+        f = jar_file.open(file_path)
         logger.debug("Loading %s from %s", file_path, path)
     else:
         for directory in lookup_paths:
@@ -68,8 +68,6 @@ def class_loader(class_name, (lookup_paths, jars, rt)):
     except Exception:
         raise
     finally:
-        if zip_file is not None:
-            zip_file.close()
         f.close()
     return make_class(this_name, super_name, constant_pool, all_fields,
                       all_methods, all_interfaces, class_flags)
