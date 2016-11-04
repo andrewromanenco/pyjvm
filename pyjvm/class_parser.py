@@ -1,6 +1,7 @@
 '''Parse java bytecode.'''
 
 from pyjvm.java_class import JavaClassBuilder
+from pyjvm.classfile.access_flags import read_access_flags
 from pyjvm.classfile.constant_pool import read_constant_pool
 
 class ClassParser:
@@ -12,7 +13,11 @@ class ClassParser:
         self.__confirm_header(reader)
         self.__confirm_jdk7(reader)
         constant_pool = read_constant_pool(reader)
-        return JavaClassBuilder().with_constant_pool(constant_pool).build()
+        access_flags = read_access_flags(reader)
+        return JavaClassBuilder() \
+            .with_constant_pool(constant_pool) \
+            .with_access_flags(access_flags) \
+            .build()
 
 
     def __confirm_header(self, reader):
