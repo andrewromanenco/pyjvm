@@ -38,27 +38,22 @@ class JavaClassBuilder:
 
     def build(self):
         """Build java class representation."""
-        if self.constant_pool is None:
-            raise Exception("Constant pool is not provided")
-        if self.access_flags is None:
-            raise Exception("Access flags are not provided")
-        if self.interface_indexes is None:
-            raise Exception("Interface indexes were not set")
-        return JavaClass(
-            self.constant_pool,
-            self.access_flags,
-            self.this_index,
-            self.super_index,
-            self.interface_indexes)
+        return JavaClass(self)
 
 
 class JavaClass:
     """Java class immutable representation."""
 
-    def __init__(self, constant_pool, access_flags, this_index, super_index, interface_indexes):
+    def __init__(self, java_class_builder):
         """Init a java class."""
-        self.constant_pool = constant_pool
-        self.access_flags = access_flags
-        self.this_index = this_index
-        self.super_index = super_index
-        self.interface_indexes = interface_indexes
+        if java_class_builder.constant_pool is None:
+            raise Exception("Constant pool is not provided")
+        if java_class_builder.access_flags is None:
+            raise Exception("Access flags are not provided")
+        if java_class_builder.interface_indexes is None:
+            raise Exception("Interface indexes were not set")
+        self.constant_pool = java_class_builder.constant_pool
+        self.access_flags = java_class_builder.access_flags
+        self.this_index = java_class_builder.this_index
+        self.super_index = java_class_builder.super_index
+        self.interface_indexes = java_class_builder.interface_indexes
