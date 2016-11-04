@@ -10,6 +10,7 @@ class JavaClassBuilder:
         self.this_index = -1
         self.super_index = -1
         self.interface_indexes = None
+        self.fields = None
 
     def with_constant_pool(self, cpool):
         """Assign constant pool."""
@@ -36,6 +37,11 @@ class JavaClassBuilder:
         self.interface_indexes = interface_indexes
         return self
 
+    def with_fields(self, fields):
+        """Set fields of a class."""
+        self.fields = fields
+        return self
+
     def build(self):
         """Build java class representation."""
         return JavaClass(self)
@@ -52,8 +58,11 @@ class JavaClass:
             raise Exception("Access flags are not provided")
         if java_class_builder.interface_indexes is None:
             raise Exception("Interface indexes were not set")
+        if java_class_builder.fields is None:
+            raise Exception("Fields are not set")
         self.constant_pool = java_class_builder.constant_pool
         self.access_flags = java_class_builder.access_flags
         self.this_index = java_class_builder.this_index
         self.super_index = java_class_builder.super_index
         self.interface_indexes = java_class_builder.interface_indexes
+        self.fields = java_class_builder.fields
