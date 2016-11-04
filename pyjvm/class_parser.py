@@ -1,5 +1,8 @@
 '''Parse java bytecode.'''
 
+from pyjvm.java_class import JavaClassBuilder
+from pyjvm.classfile.constant_pool import read_constant_pool
+
 class ClassParser:
     """Parse java bytecode to in-memory structure."""
 
@@ -8,6 +11,9 @@ class ClassParser:
         reader = _ByteReaderDecorator(bytecode_reader)
         self.__confirm_header(reader)
         self.__confirm_jdk7(reader)
+        constant_pool = read_constant_pool(reader)
+        return JavaClassBuilder().with_constant_pool(constant_pool).build()
+
 
     def __confirm_header(self, reader):
         '''Valid bytecode must start with 0xCAFEBABE.'''

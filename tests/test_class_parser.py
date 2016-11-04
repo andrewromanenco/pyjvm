@@ -32,7 +32,8 @@ class TestClassParser(unittest.TestCase):
         self.assertTrue('No CAFEBABE' in str(context.exception))
 
     def test_parse_does_not_fail_with_good_input(self):
-        self.parser.parse(BytecodeFileReader('tests/res/ArraysTest.class'))
+        klass = self.parser.parse(BytecodeFileReader('tests/res/ArraysTest.class'))
+        self.assertEqual(klass.constant_pool.slots_count(), 96)
 
 if __name__ == '__main__':
     unittest.main()
