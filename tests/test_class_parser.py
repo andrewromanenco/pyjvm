@@ -37,6 +37,9 @@ class TestClassParser(unittest.TestCase):
         self.assertEqual(klass.constant_pool.slots_count(), 96)
         self.assertTrue(klass.access_flags.is_set(AccessFlag.ACC_PUBLIC))
         self.assertFalse(klass.access_flags.is_set(AccessFlag.ACC_FINAL))
+        self.assertEqual(klass.this_index, 38)
+        self.assertEqual(klass.super_index, 28)
+
 
 if __name__ == '__main__':
     unittest.main()

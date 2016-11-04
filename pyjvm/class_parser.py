@@ -14,9 +14,13 @@ class ClassParser:
         self.__confirm_jdk7(reader)
         constant_pool = read_constant_pool(reader)
         access_flags = read_access_flags(reader)
+        this_class_index = reader.get_u2()
+        super_class_index = reader.get_u2()
         return JavaClassBuilder() \
             .with_constant_pool(constant_pool) \
             .with_access_flags(access_flags) \
+            .with_this_class_index(this_class_index) \
+            .with_super_class_index(super_class_index) \
             .build()
 
 
