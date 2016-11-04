@@ -39,6 +39,7 @@ class TestClassParser(unittest.TestCase):
         self.assertFalse(klass.access_flags.is_set(AccessFlag.ACC_FINAL))
         self.assertEqual(klass.this_index, 38)
         self.assertEqual(klass.super_index, 28)
+        self.assertEqual(len(klass.interface_indexes), 0)
 
 
 if __name__ == '__main__':
