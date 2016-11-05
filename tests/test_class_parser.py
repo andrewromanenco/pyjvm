@@ -41,6 +41,7 @@ class TestClassParser(unittest.TestCase):
         self.assertEqual(klass.super_index, 28)
         self.assertEqual(len(klass.interface_indexes), 0)
         self.assertEqual(len(klass.fields), 0)
+        self.assertEqual(len(klass.methods), 2)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ from pyjvm.classfile.access_flags import read_access_flags
 from pyjvm.classfile.constant_pool import read_constant_pool
 from pyjvm.classfile.interfaces import read_interfaces
 from pyjvm.classfile.fields import read_fields
+from pyjvm.classfile.methods import read_methods
 
 class ClassParser:
     """Parse java bytecode to in-memory structure."""
@@ -20,6 +21,7 @@ class ClassParser:
         super_class_index = reader.get_u2()
         interface_indexes = read_interfaces(reader)
         fields = read_fields(reader)
+        methods = read_methods(reader)
         return JavaClassBuilder() \
             .with_constant_pool(constant_pool) \
             .with_access_flags(access_flags) \
@@ -27,6 +29,7 @@ class ClassParser:
             .with_super_class_index(super_class_index) \
             .with_interface_indexes(interface_indexes) \
             .with_fields(fields) \
+            .with_methods(methods) \
             .build()
 
 
