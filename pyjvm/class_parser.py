@@ -14,7 +14,7 @@ class ClassParser:
         """Read bytes from a source and create JavaClass instance."""
         reader = _ByteReaderDecorator(bytecode_reader)
         self.__confirm_header(reader)
-        self.__confirm_jdk7(reader)
+        self.__confirm_jdk8(reader)
         constant_pool = read_constant_pool(reader)
         access_flags = read_access_flags(reader)
         this_class_index = reader.get_u2()
@@ -43,11 +43,11 @@ class ClassParser:
                 raise Exception("No CAFEBABE")
             index += 1
 
-    def __confirm_jdk7(self, reader):
+    def __confirm_jdk8(self, reader):
         '''Make sure this is java 7 class'''
         reader.get_u2()
         major = reader.get_u2()
-        if major != 0x33:  # 52 - jdk7
+        if major != 0x34:  # 52 - jdk8
             raise Exception("Not a jdk7 class")
 
 

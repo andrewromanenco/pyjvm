@@ -33,15 +33,15 @@ class TestClassParser(unittest.TestCase):
         self.assertTrue('No CAFEBABE' in str(context.exception))
 
     def test_parse_does_not_fail_with_good_input(self):
-        klass = self.parser.parse(BytecodeFileReader('tests/res/ArraysTest.class'))
-        self.assertEqual(klass.constant_pool.slots_count(), 96)
+        klass = self.parser.parse(BytecodeFileReader('tests/res/SampleClass.class'))
+        self.assertEqual(klass.constant_pool.slots_count(), 119)
         self.assertTrue(klass.access_flags.is_set(AccessFlag.ACC_PUBLIC))
         self.assertFalse(klass.access_flags.is_set(AccessFlag.ACC_FINAL))
-        self.assertEqual(klass.this_index, 38)
-        self.assertEqual(klass.super_index, 28)
-        self.assertEqual(len(klass.interface_indexes), 0)
-        self.assertEqual(len(klass.fields), 0)
-        self.assertEqual(len(klass.methods), 2)
+        self.assertEqual(klass.this_index, 1)
+        self.assertEqual(klass.super_index, 3)
+        self.assertEqual(len(klass.interface_indexes), 1)
+        self.assertEqual(len(klass.fields), 6)
+        self.assertEqual(len(klass.methods), 6)
 
 
 if __name__ == '__main__':

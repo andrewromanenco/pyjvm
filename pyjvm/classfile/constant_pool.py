@@ -19,6 +19,7 @@ class Tag(Enum):
     CONSTANT_Utf8 = 1
     CONSTANT_MethodHandle = 15
     CONSTANT_MethodType = 16
+    CONSTANT_InvokeDynamic = 18
 
 # These are definitions from Jvm8 specs; Chapter 4.4
 ConstantClassInfo = namedtuple(
@@ -45,6 +46,10 @@ ConstantInterfaceMethodrefInfo = namedtuple(
     'ConstantInterfaceMethodrefInfo',
     ['class_index', 'name_and_type_index'])
 
+ConstantIntegerInfo = namedtuple(
+    'ConstantIntegerInfo',
+    ['bytes'])
+
 ConstantLongInfo = namedtuple(
     'ConstantLongInfo',
     ['high_bytes', 'low_bytes'])
@@ -60,6 +65,19 @@ ConstantFloatInfo = namedtuple(
 ConstantUtf8Info = namedtuple(
     'ConstantUtf8Info',
     ['length', 'bytes'])
+
+ConstantMethodHandleInfo = namedtuple(
+    'ConstantMethodHandleInfo',
+    ['reference_kind', 'reference_index'])
+
+ConstantMethodTypeInfo = namedtuple(
+    'ConstantMethodTypeInfo',
+    ['descriptor_index'])
+
+
+ConstantInvokeDynamicInfo = namedtuple(
+    'ConstantInvokeDynamicInfo',
+    ['bootstrap_method_attr_index', 'name_and_type_index'])
 
 def read_constant_pool(reader):
     """Parse constant pool entries from a stream."""
@@ -86,6 +104,10 @@ def read_constant_pool(reader):
             builder.append_entry(
                 ConstantClassInfo(
                     name_index=reader.get_u2()))
+        elif cp_entry_type == Tag.CONSTANT_Integer.value:
+            builder.append_entry(
+                ConstantIntegerInfo(
+                    bytes=reader.get_u4()))
         elif cp_entry_type == Tag.CONSTANT_Long.value:
             cp_size -= 1
             builder.append_double_entry(
@@ -118,6 +140,20 @@ def read_constant_pool(reader):
                 ConstantNameAndTypeInfo(
                     name_index=reader.get_u2(),
                     descriptor_index=reader.get_u2()))
+        elif cp_entry_type == Tag.CONSTANT_MethodHandle.value:
+            builder.append_entry(
+                ConstantMethodHandleInfo(
+                    reference_kind=reader.get_u1(),
+                    reference_index=reader.get_u2()))
+        elif cp_entry_type == Tag.CONSTANT_MethodType.value:
+            builder.append_entry(
+                ConstantMethodTypeInfo(
+                    descriptor_index=reader.get_u2()))
+        elif cp_entry_type == Tag.CONSTANT_InvokeDynamic.value:
+            builder.append_entry(
+                ConstantInvokeDynamicInfo(
+                    bootstrap_method_attr_index=reader.get_u2(),
+                    name_and_type_index=reader.get_u2()))
         else:
             raise Exception("Not supported entry type: %d" % cp_entry_type)
         cp_size -= 1

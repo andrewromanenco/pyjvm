@@ -13,7 +13,7 @@ def read_attributes(reader):
     attributes = []
     while attr_count > 0:
         attribute_name_index = reader.get_u2()
-        attribute_length = reader.get_u2()
+        attribute_length = reader.get_u4()
         info = reader.get_uv(attribute_length)
         attributes.append(Attribute(
             attribute_name_index,

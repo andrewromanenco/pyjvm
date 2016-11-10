@@ -5,10 +5,10 @@ from pyjvm.bytecode_readers import BytecodeFileReader
 class TestBytecodeFileReader(unittest.TestCase):
 
     def setUp(self):
-        self.reader = BytecodeFileReader('tests/res/ArraysTest.class')
+        self.reader = BytecodeFileReader('tests/res/SampleClass.class')
 
     def test_size_returns_all_bytes(self):
-        self.assertEqual(self.reader.size(), 2924)
+        self.assertEqual(self.reader.size(), 2287)
 
     def test_read_one_byte(self):
         byte = self.reader.read(1)
@@ -18,7 +18,7 @@ class TestBytecodeFileReader(unittest.TestCase):
 
     def test_read_only_available_bytes(self):
         byte = self.reader.read(5000)
-        self.assertEqual(len(byte), 2924)
+        self.assertEqual(len(byte), 2287)
 
 if __name__ == '__main__':
     unittest.main()
