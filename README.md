@@ -1,6 +1,6 @@
 Work in progress.
 
-Refactoring code to improve structure and support pyton 3.
+Refactoring code to improve structure and support python 3.
 
 Testing
 

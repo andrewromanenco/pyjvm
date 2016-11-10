@@ -48,7 +48,7 @@ class ClassParser:
         reader.get_u2()
         major = reader.get_u2()
         if major != 0x34:  # 52 - jdk8
-            raise Exception("Not a jdk7 class")
+            raise Exception("Not a jdk8 class")
 
 
 class _ByteReaderDecorator:
