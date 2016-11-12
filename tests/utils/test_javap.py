@@ -25,13 +25,13 @@ class TestJavap(unittest.TestCase):
                     Field(flags=[], name='value4', type='int'),
                     Field(flags=[], name='value5', type='int[]')],
                 methods=[
-                    Method(flags=['public', 'static'], name='main', params=['java.lang.String[]'], returns='void'),
-                    Method(flags=['public'], name='<init>', params=[], returns='void'),
-                    Method(flags=['public'], name='<init>', params=['int'], returns='void'),
-                    Method(flags=['public'], name='apply', params=['java.util.function.Function'], returns='int'),
-                    Method(flags=[], name='method', params=[], returns='void'),
-                    Method(flags=['private', 'static'], name='lambda$main$0', params=['java.lang.Integer'], returns='java.lang.Integer'),
-                    Method(flags=['static'], name='<clinit>', params=[], returns='void')]
+                    Method(flags=['public', 'static'], name='main', params=['java.lang.String[]'], returns='void', exceptions=[]),
+                    Method(flags=['public'], name='<init>', params=[], returns='void', exceptions=[]),
+                    Method(flags=['public'], name='<init>', params=['int'], returns='void', exceptions=[]),
+                    Method(flags=['public'], name='apply', params=['java.util.function.Function'], returns='int', exceptions=[]),
+                    Method(flags=[], name='method', params=[], returns='void', exceptions=['java.lang.Exception']),
+                    Method(flags=['private', 'static'], name='lambda$main$0', params=['java.lang.Integer'], returns='java.lang.Integer', exceptions=[]),
+                    Method(flags=['static'], name='<clinit>', params=[], returns='void', exceptions=[])]
                 )
             )
 

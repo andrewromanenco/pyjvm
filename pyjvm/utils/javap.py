@@ -21,7 +21,7 @@ Field = namedtuple(
 
 Method = namedtuple(
     'Method',
-    ['flags', 'name', 'params', 'returns']
+    ['flags', 'name', 'params', 'returns', 'exceptions']
     )
 
 def javap(path_to_bytecode):
@@ -98,7 +98,8 @@ def resolve_methods(klass):
                 flags=resolve_method_flags(method.access_flags),
                 name=string_from_ConstantUtf8Info(name_entry),
                 params=params,
-                returns=returns
+                returns=returns,
+                exceptions=resolve_exceptions(klass.constant_pool, method)
                 ))
     return result
 
@@ -141,6 +142,24 @@ def resolve_method_flags(access_flags):
     if access_flags & MethodFlag.ACC_ABSTRACT.value:
         result.append('abstract')
     return result
+
+def resolve_exceptions(constant_pool, method):
+    '''Read exception thrown by a method.'''
+    result = []
+    for attr in method.attributes:
+        name = string_from_ConstantUtf8Info(constant_pool.entry(attr.attribute_name_index))
+        if name == 'Exceptions':
+            data = attr.info
+            count = (data[0] << 8) + data[1]
+            index = 2
+            while count > 0:
+                exception_name_index = (data[index] << 8) + data[index + 1]
+                exception_name = name_from_ConstantClassInfo(constant_pool, exception_name_index)
+                result.append(exception_name.replace('/','.'))
+                index += 2
+                count -= 1
+    return result
+
 
 def resolve_type(type_entry):
     '''Get field type.'''

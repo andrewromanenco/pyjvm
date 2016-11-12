@@ -44,6 +44,9 @@ def describe_class_from(path):
         signature += ', '.join(method.params)
         signature += ')'
         line.append(signature)
+        if method.exceptions:
+            line.append('throws')
+            line.append(', '.join(method.exceptions))
         print(' '.join(line) + ';')
 
     print('}')
