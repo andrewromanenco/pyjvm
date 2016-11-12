@@ -10,7 +10,12 @@ from pyjvm.classfile.access_flags import AccessFlag
 
 ResolvedClass = namedtuple(
     'ResolvedClass',
-    ['accessor', 'class_or_interface', 'class_name', 'interfaces'])
+    ['accessor', 'class_or_interface', 'class_name', 'interfaces', 'fields'])
+
+Field = namedtuple(
+    'Field',
+    ['flags', 'name', 'type']
+    )
 
 def javap(path_to_bytecode):
     '''Expects a path to Java 8 class file and returns resolved strings.'''
@@ -20,11 +25,9 @@ def javap(path_to_bytecode):
         accessor=resolve_class_accessor(klass),
         class_or_interface=resolve_class_or_interface(klass),
         class_name=resolve_class_name(klass),
-        interfaces=resolve_interfaces(klass)
+        interfaces=resolve_interfaces(klass),
+        fields=resolve_fields(klass)
         )
-    #print_class_declaration(resolved_class, klass)
-    #print_class_fields(resolved_class, klass)
-    #print_class_methods(resolved_class, klass)
 
     return resolved_class
 
@@ -56,6 +59,61 @@ def resolve_interfaces(klass):
     for index in klass.interface_indexes:
         result.append(name_from_ConstantClassInfo(klass.constant_pool, index))
     return result
+
+def resolve_fields(klass):
+    '''Resolve all fields.'''
+    result = []
+    for field in klass.fields:
+        name_entry = klass.constant_pool.entry(field.name_index)
+        type_entry = klass.constant_pool.entry(field.descriptor_index)
+        result.append(
+            Field(
+                flags=resolve_field_flags(field.access_flags),
+                name=string_from_ConstantUtf8Info(name_entry),
+                type=resolve_type(type_entry)
+                ))
+    return result
+
+def resolve_field_flags(access_flags):
+    '''Decode flags.'''
+    result = []
+    if access_flags.is_set(AccessFlag.ACC_PUBLIC):
+        result.append('public')
+    if access_flags.is_set(AccessFlag.ACC_PRIVATE):
+        result.append('private')
+    if access_flags.is_set(AccessFlag.ACC_PROTECTED):
+        result.append('protected')
+    if access_flags.is_set(AccessFlag.ACC_STATIC):
+        result.append('static')
+    if access_flags.is_set(AccessFlag.ACC_FINAL):
+        result.append('final')
+    if access_flags.is_set(AccessFlag.ACC_VOLATILE):
+        result.append('volatile')
+    if access_flags.is_set(AccessFlag.ACC_TRANSIENT):
+        result.append('transient')
+    return result
+
+def resolve_type(type_entry):
+    '''Get field type.'''
+    type_name = string_from_ConstantUtf8Info(type_entry)
+    return unpack_type(type_name)
+
+def unpack_type(type_name):
+    '''Make type string uman friendly.'''
+    if type_name[0] == '[':
+        return unpack_type(type_name[1:]) + '[]'
+    if type_name[0] == 'L':
+        return type_name[1:-1].replace('/', '.')
+    types = {
+        'B':'byte',
+        'C':'char',
+        'D':'double',
+        'F':'float',
+        'I':'int',
+        'J':'long',
+        'S':'short',
+        'Z':'boolean'}
+    return types[type_name]
 
 def name_from_ConstantClassInfo(constant_pool, entry_index):
     '''Resolves specific entry from a constant pool.'''

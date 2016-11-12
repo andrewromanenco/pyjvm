@@ -2,6 +2,7 @@ import unittest
 
 from pyjvm.utils.javap import javap
 from pyjvm.utils.javap import ResolvedClass
+from pyjvm.utils.javap import Field
 
 class TestJavap(unittest.TestCase):
 
@@ -13,7 +14,14 @@ class TestJavap(unittest.TestCase):
                 accessor=['public'],
                 class_or_interface='class',
                 class_name='sample/pckg/SampleClass',
-                interfaces=['java/io/Serializable']
+                interfaces=['java/io/Serializable'],
+                fields=[
+                    Field(flags=['private', 'static', 'final'], name='serialVersionUID', type='long'),
+                    Field(flags=['protected', 'static', 'final'], name='value1', type='int'),
+                    Field(flags=['static', 'final'], name='value2', type='double'),
+                    Field(flags=['final'], name='value3', type='int'),
+                    Field(flags=[], name='value4', type='int'),
+                    Field(flags=[], name='value5', type='int[]')]
                 )
             )
 
