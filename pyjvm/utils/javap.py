@@ -31,7 +31,7 @@ def javap(path_to_bytecode):
     resolved_class = ResolvedClass(
         accessor=resolve_class_accessor(klass),
         class_or_interface=resolve_class_or_interface(klass),
-        class_name=resolve_class_name(klass),
+        class_name=resolve_class_name(klass).replace('/', '.'),
         interfaces=resolve_interfaces(klass),
         fields=resolve_fields(klass),
         methods=resolve_methods(klass)
@@ -65,7 +65,7 @@ def resolve_interfaces(klass):
     '''Returns list of all interfaces implemented by a given class.'''
     result = []
     for index in klass.interface_indexes:
-        result.append(name_from_ConstantClassInfo(klass.constant_pool, index))
+        result.append(name_from_ConstantClassInfo(klass.constant_pool, index).replace('/', '.'))
     return result
 
 def resolve_fields(klass):

@@ -14,8 +14,8 @@ class TestJavap(unittest.TestCase):
             ResolvedClass(
                 accessor=['public'],
                 class_or_interface='class',
-                class_name='sample/pckg/SampleClass',
-                interfaces=['java/io/Serializable'],
+                class_name='sample.pckg.SampleClass',
+                interfaces=['java.io.Serializable'],
                 fields=[
                     Field(flags=['private', 'static', 'final'], name='serialVersionUID', type='long'),
                     Field(flags=['protected', 'static', 'final'], name='value1', type='int'),
