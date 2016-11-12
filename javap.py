@@ -17,6 +17,8 @@ def describe_class_from(path):
     print(' '.join(line))
 
     for field in klass.fields:
+        if field.name == 'serialVersionUID':
+            continue
         line = ["   "]
         line.extend(field.flags)
         line.append(field.type)
@@ -24,10 +26,17 @@ def describe_class_from(path):
         print(' '.join(line) + ';')
 
     for method in klass.methods:
+        if method.name == '<clinit>':
+            print('    static {};')
+            continue
+        if '$' in method.name:
+            continue
         line = ["   "]
         line.extend(method.flags)
         line.append(method.returns)
         signature = method.name
+        if method.name == '<init>':
+            signature = klass.class_name
         signature += '('
         signature += ', '.join(method.params)
         signature += ')'
@@ -35,7 +44,6 @@ def describe_class_from(path):
         print(' '.join(line) + ';')
 
     print('}')
-    print(klass)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
