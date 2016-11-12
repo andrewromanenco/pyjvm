@@ -6,7 +6,8 @@ from collections import namedtuple
 
 from pyjvm.bytecode_readers import BytecodeFileReader
 from pyjvm.class_parser import ClassParser
-from pyjvm.classfile.access_flags import AccessFlag
+from pyjvm.classfile.access_flags import ClassFlag
+from pyjvm.classfile.access_flags import FieldFlag
 
 ResolvedClass = namedtuple(
     'ResolvedClass',
@@ -34,17 +35,17 @@ def javap(path_to_bytecode):
 def resolve_class_accessor(klass):
     '''Returns list of flags on a given class.'''
     result = []
-    if klass.access_flags.is_set(AccessFlag.ACC_PUBLIC):
+    if klass.access_flags & ClassFlag.ACC_PUBLIC.value:
         result.append('public')
-    if klass.access_flags.is_set(AccessFlag.ACC_ABSTRACT):
+    if klass.access_flags & ClassFlag.ACC_ABSTRACT.value:
         result.append('abstract')
-    if klass.access_flags.is_set(AccessFlag.ACC_FINAL):
+    if klass.access_flags & ClassFlag.ACC_FINAL.value:
         result.append('final')
     return result
 
 def resolve_class_or_interface(klass):
     '''Decides if this is a class or an interface.'''
-    if klass.access_flags.is_set(AccessFlag.ACC_INTERFACE):
+    if klass.access_flags & ClassFlag.ACC_INTERFACE.value:
         return 'interface'
     else:
         return 'class'
@@ -77,19 +78,19 @@ def resolve_fields(klass):
 def resolve_field_flags(access_flags):
     '''Decode flags.'''
     result = []
-    if access_flags.is_set(AccessFlag.ACC_PUBLIC):
+    if access_flags & FieldFlag.ACC_PUBLIC.value:
         result.append('public')
-    if access_flags.is_set(AccessFlag.ACC_PRIVATE):
+    if access_flags & FieldFlag.ACC_PRIVATE.value:
         result.append('private')
-    if access_flags.is_set(AccessFlag.ACC_PROTECTED):
+    if access_flags & FieldFlag.ACC_PROTECTED.value:
         result.append('protected')
-    if access_flags.is_set(AccessFlag.ACC_STATIC):
+    if access_flags & FieldFlag.ACC_STATIC.value:
         result.append('static')
-    if access_flags.is_set(AccessFlag.ACC_FINAL):
+    if access_flags & FieldFlag.ACC_FINAL.value:
         result.append('final')
-    if access_flags.is_set(AccessFlag.ACC_VOLATILE):
+    if access_flags & FieldFlag.ACC_VOLATILE.value:
         result.append('volatile')
-    if access_flags.is_set(AccessFlag.ACC_TRANSIENT):
+    if access_flags & FieldFlag.ACC_TRANSIENT.value:
         result.append('transient')
     return result
 

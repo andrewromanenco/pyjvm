@@ -1,7 +1,6 @@
 """Class fields."""
 
 from collections import namedtuple
-from pyjvm.classfile.access_flags import read_access_flags
 from pyjvm.classfile.attributes import read_attributes
 
 Field = namedtuple(
@@ -18,7 +17,7 @@ def read_fields(reader):
     fields_count = reader.get_u2()
     fields = []
     while fields_count > 0:
-        access_flags = read_access_flags(reader)
+        access_flags = reader.get_u2()
         name_index = reader.get_u2()
         descriptor_index = reader.get_u2()
         attributes = read_attributes(reader)

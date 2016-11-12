@@ -3,7 +3,7 @@ import unittest
 from pyjvm.bytecode_readers import AbstractBytecodeReader
 from pyjvm.bytecode_readers import BytecodeFileReader
 from pyjvm.class_parser import ClassParser
-from pyjvm.classfile.access_flags import AccessFlag
+from pyjvm.classfile.access_flags import ClassFlag
 
 class ListByteCodeReader(AbstractBytecodeReader):
 
@@ -35,8 +35,8 @@ class TestClassParser(unittest.TestCase):
     def test_parse_does_not_fail_with_good_input(self):
         klass = self.parser.parse(BytecodeFileReader('tests/res/SampleClass.class'))
         self.assertEqual(klass.constant_pool.slots_count(), 119)
-        self.assertTrue(klass.access_flags.is_set(AccessFlag.ACC_PUBLIC))
-        self.assertFalse(klass.access_flags.is_set(AccessFlag.ACC_FINAL))
+        self.assertTrue(klass.access_flags & ClassFlag.ACC_PUBLIC.value)
+        self.assertFalse(klass.access_flags & ClassFlag.ACC_FINAL.value)
         self.assertEqual(klass.this_index, 1)
         self.assertEqual(klass.super_index, 3)
         self.assertEqual(len(klass.interface_indexes), 1)

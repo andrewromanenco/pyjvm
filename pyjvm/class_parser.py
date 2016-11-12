@@ -1,7 +1,6 @@
 '''Parse java bytecode.'''
 
 from pyjvm.java_class import JavaClassBuilder
-from pyjvm.classfile.access_flags import read_access_flags
 from pyjvm.classfile.constant_pool import read_constant_pool
 from pyjvm.classfile.interfaces import read_interfaces
 from pyjvm.classfile.fields import read_fields
@@ -16,7 +15,7 @@ class ClassParser:
         self.__confirm_header(reader)
         self.__confirm_jdk8(reader)
         constant_pool = read_constant_pool(reader)
-        access_flags = read_access_flags(reader)
+        access_flags = reader.get_u2()
         this_class_index = reader.get_u2()
         super_class_index = reader.get_u2()
         interface_indexes = read_interfaces(reader)
