@@ -12,7 +12,7 @@ from pyjvm.classfile.access_flags import MethodFlag
 
 ResolvedClass = namedtuple(
     'ResolvedClass',
-    ['accessor', 'class_or_interface', 'class_name', 'interfaces', 'fields', 'methods'])
+    ['accessor', 'class_or_interface', 'class_name', 'super_class', 'interfaces', 'fields', 'methods'])
 
 Field = namedtuple(
     'Field',
@@ -32,6 +32,7 @@ def javap(path_to_bytecode):
         accessor=resolve_class_accessor(klass),
         class_or_interface=resolve_class_or_interface(klass),
         class_name=resolve_class_name(klass).replace('/', '.'),
+        super_class=resolve_super_class_name(klass).replace('/', '.'),
         interfaces=resolve_interfaces(klass),
         fields=resolve_fields(klass),
         methods=resolve_methods(klass)
@@ -60,6 +61,10 @@ def resolve_class_or_interface(klass):
 def resolve_class_name(klass):
     '''Resolves class name.'''
     return name_from_ConstantClassInfo(klass.constant_pool, klass.this_index)
+
+def resolve_super_class_name(klass):
+    '''Resolves super class name.'''
+    return name_from_ConstantClassInfo(klass.constant_pool, klass.super_index)
 
 def resolve_interfaces(klass):
     '''Returns list of all interfaces implemented by a given class.'''

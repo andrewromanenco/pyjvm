@@ -15,6 +15,7 @@ class TestJavap(unittest.TestCase):
                 accessor=['public'],
                 class_or_interface='class',
                 class_name='sample.pckg.SampleClass',
+                super_class='java.lang.Object',
                 interfaces=['java.io.Serializable'],
                 fields=[
                     Field(flags=['private', 'static', 'final'], name='serialVersionUID', type='long'),
