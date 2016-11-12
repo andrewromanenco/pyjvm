@@ -10,6 +10,9 @@ def describe_class_from(path):
     line.extend(klass.accessor)
     line.append(klass.class_or_interface)
     line.append(klass.class_name)
+    if klass.super_class != 'java.lang.Object':
+        line.append('extends')
+        line.append(klass.super_class)
     if len(klass.interfaces):
         line.append('implements')
         line.append(', '.join(klass.interfaces))
