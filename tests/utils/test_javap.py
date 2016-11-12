@@ -7,7 +7,6 @@ class TestJavap(unittest.TestCase):
 
     def test_javap(self):
         resolved_class = javap('tests/res/SampleClass.class')
-        print(resolved_class)
         self.assertEqual(
             resolved_class,
             ResolvedClass(
