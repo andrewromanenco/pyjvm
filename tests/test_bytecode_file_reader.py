@@ -8,7 +8,7 @@ class TestBytecodeFileReader(unittest.TestCase):
         self.reader = BytecodeFileReader('tests/res/SampleClass.class')
 
     def test_size_returns_all_bytes(self):
-        self.assertEqual(self.reader.size(), 2287)
+        self.assertEqual(self.reader.size(), 1989)
 
     def test_read_one_byte(self):
         byte = self.reader.read(1)
@@ -18,7 +18,7 @@ class TestBytecodeFileReader(unittest.TestCase):
 
     def test_read_only_available_bytes(self):
         byte = self.reader.read(5000)
-        self.assertEqual(len(byte), 2287)
+        self.assertEqual(len(byte), 1989)
 
 if __name__ == '__main__':
     unittest.main()
