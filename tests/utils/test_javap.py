@@ -3,6 +3,7 @@ import unittest
 from pyjvm.utils.javap import javap
 from pyjvm.utils.javap import ResolvedClass
 from pyjvm.utils.javap import Field
+from pyjvm.utils.javap import Method
 
 class TestJavap(unittest.TestCase):
 
@@ -21,7 +22,14 @@ class TestJavap(unittest.TestCase):
                     Field(flags=['static', 'final'], name='value2', type='double'),
                     Field(flags=['final'], name='value3', type='int'),
                     Field(flags=[], name='value4', type='int'),
-                    Field(flags=[], name='value5', type='int[]')]
+                    Field(flags=[], name='value5', type='int[]')],
+                methods=[
+                    Method(flags=['static'], name='<clinit>', params=[], returns='void'),
+                    Method(flags=['public', 'static'], name='main', params=['java.lang.String[]'], returns='void'),
+                    Method(flags=['public'], name='<init>', params=[], returns='void'),
+                    Method(flags=['public'], name='<init>', params=['int'], returns='void'),
+                    Method(flags=['public'], name='apply', params=['java.util.function.Function'], returns='int'),
+                    Method(flags=['private', 'static'], name='lambda$0', params=['java.lang.Integer'], returns='java.lang.Integer')]
                 )
             )
 

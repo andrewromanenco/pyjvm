@@ -8,14 +8,20 @@ from pyjvm.bytecode_readers import BytecodeFileReader
 from pyjvm.class_parser import ClassParser
 from pyjvm.classfile.access_flags import ClassFlag
 from pyjvm.classfile.access_flags import FieldFlag
+from pyjvm.classfile.access_flags import MethodFlag
 
 ResolvedClass = namedtuple(
     'ResolvedClass',
-    ['accessor', 'class_or_interface', 'class_name', 'interfaces', 'fields'])
+    ['accessor', 'class_or_interface', 'class_name', 'interfaces', 'fields', 'methods'])
 
 Field = namedtuple(
     'Field',
     ['flags', 'name', 'type']
+    )
+
+Method = namedtuple(
+    'Method',
+    ['flags', 'name', 'params', 'returns']
     )
 
 def javap(path_to_bytecode):
@@ -27,7 +33,8 @@ def javap(path_to_bytecode):
         class_or_interface=resolve_class_or_interface(klass),
         class_name=resolve_class_name(klass),
         interfaces=resolve_interfaces(klass),
-        fields=resolve_fields(klass)
+        fields=resolve_fields(klass),
+        methods=resolve_methods(klass)
         )
 
     return resolved_class
@@ -75,6 +82,21 @@ def resolve_fields(klass):
                 ))
     return result
 
+def resolve_methods(klass):
+    result = []
+    for method in klass.methods:
+        name_entry = klass.constant_pool.entry(method.name_index)
+        type_entry = klass.constant_pool.entry(method.descriptor_index)
+        params, returns = parse_signature(string_from_ConstantUtf8Info(type_entry))
+        result.append(
+            Method(
+                flags=resolve_method_flags(method.access_flags),
+                name=string_from_ConstantUtf8Info(name_entry),
+                params=params,
+                returns=returns
+                ))
+    return result
+
 def resolve_field_flags(access_flags):
     '''Decode flags.'''
     result = []
@@ -92,6 +114,27 @@ def resolve_field_flags(access_flags):
         result.append('volatile')
     if access_flags & FieldFlag.ACC_TRANSIENT.value:
         result.append('transient')
+    return result
+
+def resolve_method_flags(access_flags):
+    '''Decode flags.'''
+    result = []
+    if access_flags & MethodFlag.ACC_PUBLIC.value:
+        result.append('public')
+    if access_flags & MethodFlag.ACC_PRIVATE.value:
+        result.append('private')
+    if access_flags & MethodFlag.ACC_PROTECTED.value:
+        result.append('protected')
+    if access_flags & MethodFlag.ACC_STATIC.value:
+        result.append('static')
+    if access_flags & MethodFlag.ACC_FINAL.value:
+        result.append('final')
+    if access_flags & MethodFlag.ACC_SYNCHRONIZED.value:
+        result.append('syncronized')
+    if access_flags & MethodFlag.ACC_NATIVE.value:
+        result.append('native')
+    if access_flags & MethodFlag.ACC_ABSTRACT.value:
+        result.append('abstract')
     return result
 
 def resolve_type(type_entry):
@@ -113,7 +156,8 @@ def unpack_type(type_name):
         'I':'int',
         'J':'long',
         'S':'short',
-        'Z':'boolean'}
+        'Z':'boolean',
+        'V':'void'}
     return types[type_name]
 
 def name_from_ConstantClassInfo(constant_pool, entry_index):
@@ -124,6 +168,25 @@ def name_from_ConstantClassInfo(constant_pool, entry_index):
 def string_from_ConstantUtf8Info(entry):
     '''Resolves specific entry from a constant pool.'''
     return decode_utf8(entry.bytes)
+
+def parse_signature(signature):
+    signature = signature[1:]
+    params = []
+    while signature[0] != ')':
+        token = read_next_token(signature)
+        params.append(unpack_type(token))
+        signature = signature[len(token):]
+    returns = unpack_type(signature[1:])
+    return (params, returns)
+
+def read_next_token(signature):
+    index = 0
+    while signature[index] == '[':
+        index += 1
+    if signature[index] == 'L':
+        return signature[:signature.index(';') + 1]
+    else:
+        return signature[:index + 1]
 
 def decode_utf8(data):
     '''Decode bytes to UTF8 string.'''
