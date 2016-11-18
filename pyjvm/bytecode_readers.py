@@ -16,6 +16,7 @@
 
 """Various ways to read bytecode"""
 
+import zipfile
 from abc import ABCMeta, abstractmethod
 
 class AbstractBytecodeReader(metaclass=ABCMeta):
@@ -50,3 +51,12 @@ class BytecodeFileReader(AbstractBytecodeReader):
     def size(self):
         '''Return total size of data.'''
         return len(self.bytes)
+
+class JarBytecodeFileReader(BytecodeFileReader):
+    '''Read bytecode from a file packed in a jar'''
+
+    def __init__(self, path_to_jar, class_name):
+        '''Init with a class identified by JVM class name from a given jar.'''
+        self.pointer = 0
+        archive = zipfile.ZipFile(path_to_jar, 'r')
+        self.bytes = archive.read(class_name + '.class')
