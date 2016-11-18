@@ -1,8 +1,9 @@
 '''Hande java class path and caches java classes names.'''
 
 import os
+import zipfile
 from abc import ABCMeta, abstractmethod
-from pyjvm.bytecode_readers import BytecodeFileReader
+from pyjvm.bytecode_readers import BytecodeFileReader, JarBytecodeFileReader
 
 class ClassPathEntry(metaclass=ABCMeta):
     '''An entry to in a class path.'''
@@ -11,6 +12,7 @@ class ClassPathEntry(metaclass=ABCMeta):
     def bytes(self, class_name):
         '''Returns bytes for requested java binary name. None if not found.'''
         pass
+
 
 class FolderClassPathEntry(ClassPathEntry):
     '''Class path entry for a folder.'''
@@ -27,4 +29,30 @@ class FolderClassPathEntry(ClassPathEntry):
         if not os.path.isfile(file_path):
             return None
         reader = BytecodeFileReader(file_path)
+        return reader.read(reader.size())
+
+
+class JarClassPathEntry(ClassPathEntry):
+    '''Class path entry for a jar.'''
+
+    def __init__(self, path_to_jar):
+        '''Entry caches names of files in a jar. Throws exception on jar read
+        error.'''
+        if not os.path.isfile(path_to_jar):
+            raise ValueError('No such file: ' + str(path_to_jar))
+        self.path = path_to_jar
+        self.classes = set()
+        self.__cache_names_from_jar(path_to_jar)
+
+    def __cache_names_from_jar(self, path_to_jar):
+        with zipfile.ZipFile(path_to_jar, 'r') as zfile:
+            for name in zfile.namelist():
+                if name.endswith('.class'):
+                    self.classes.add(name[:-6])
+
+    def bytes(self, class_name):
+        '''Returns bytes for requested java binary name. None if not found.'''
+        if class_name not in self.classes:
+            return None
+        reader = JarBytecodeFileReader(self.path, class_name)
         return reader.read(reader.size())
