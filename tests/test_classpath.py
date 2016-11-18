@@ -1,6 +1,24 @@
 import unittest
 
-from pyjvm.classpath import FolderClassPathEntry, JarClassPathEntry
+from pyjvm.classpath import ClassPath, FolderClassPathEntry, JarClassPathEntry
+
+class TestClassPath(unittest.TestCase):
+
+    def setUp(self):
+        self.testee = ClassPath()
+
+    def test_read_from_folder(self):
+        self.testee.add('tests/res')
+        self.testee.add('tests/res/sample.jar')
+        data = self.testee.bytes('SampleClass')
+        self.assertEqual(len(data), 1989)
+
+    def test_read_from_jar(self):
+        self.testee.add('tests/res')
+        self.testee.add('tests/res/sample.jar')
+        data = self.testee.bytes('some/pkg/JarredClass')
+        self.assertEqual(len(data), 205)
+
 
 class TestFolderClassPathEntry(unittest.TestCase):
 

@@ -5,6 +5,28 @@ import zipfile
 from abc import ABCMeta, abstractmethod
 from pyjvm.bytecode_readers import BytecodeFileReader, JarBytecodeFileReader
 
+class ClassPath:
+    '''Collection of class path entries.'''
+
+    def __init__(self):
+        '''Init new class path.'''
+        self.entries = []
+
+    def add(self, path):
+        '''Path to a folder or a jar file.'''
+        if os.path.isdir(path):
+            self.entries.append(FolderClassPathEntry(path))
+        else:
+            self.entries.append(JarClassPathEntry(path))
+
+    def bytes(self, class_name):
+        '''Returns bytes for requested java binary name. None if not found.'''
+        for entry in self.entries:
+            data = entry.bytes(class_name)
+            if data is not None:
+                return data
+        return None
+
 class ClassPathEntry(metaclass=ABCMeta):
     '''An entry to in a class path.'''
 
