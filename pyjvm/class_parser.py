@@ -6,6 +6,7 @@ from pyjvm.classfile.interfaces import read_interfaces
 from pyjvm.classfile.fields import read_fields
 from pyjvm.classfile.methods import read_methods
 
+
 class ClassParser:
     """Parse java bytecode to in-memory structure."""
 
@@ -30,7 +31,6 @@ class ClassParser:
             .with_fields(fields) \
             .with_methods(methods) \
             .build()
-
 
     def __confirm_header(self, reader):
         '''Valid bytecode must start with 0xCAFEBABE.'''

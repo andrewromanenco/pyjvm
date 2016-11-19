@@ -2,8 +2,8 @@ import unittest
 
 from pyjvm.classpath import ClassPath, FolderClassPathEntry, JarClassPathEntry
 
-class TestClassPath(unittest.TestCase):
 
+class TestClassPath(unittest.TestCase):
     def setUp(self):
         self.testee = ClassPath()
 
@@ -21,7 +21,6 @@ class TestClassPath(unittest.TestCase):
 
 
 class TestFolderClassPathEntry(unittest.TestCase):
-
     def test_fail_if_wrong_path(self):
         with self.assertRaises(ValueError) as context:
             FolderClassPathEntry('/non/existing/path/123')
@@ -42,7 +41,6 @@ class TestFolderClassPathEntry(unittest.TestCase):
 
 
 class TestJarClassPathEntry(unittest.TestCase):
-
     def test_fail_if_wrong_path(self):
         with self.assertRaises(ValueError) as context:
             JarClassPathEntry('/non/existing/path/123')

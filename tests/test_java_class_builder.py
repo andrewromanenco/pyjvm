@@ -4,8 +4,8 @@ from pyjvm.java_class import JavaClassBuilder
 
 STUB = "stub"
 
-class TestJavaClassBuilder(unittest.TestCase):
 
+class TestJavaClassBuilder(unittest.TestCase):
     def test_fail_if_no_constant_pool(self):
         testee = JavaClassBuilder()
         with self.assertRaises(Exception) as context:
@@ -14,7 +14,8 @@ class TestJavaClassBuilder(unittest.TestCase):
                 .with_interface_indexes(STUB) \
                 .with_fields(STUB) \
                 .build()
-        self.assertTrue('Constant pool is not provided' in str(context.exception))
+        self.assertTrue(
+            'Constant pool is not provided' in str(context.exception))
 
     def test_fail_if_no_access_flags(self):
         testee = JavaClassBuilder()
@@ -25,7 +26,8 @@ class TestJavaClassBuilder(unittest.TestCase):
                 .with_fields(STUB) \
                 .with_methods(STUB) \
                 .build()
-        self.assertTrue('Access flags are not provided' in str(context.exception))
+        self.assertTrue(
+            'Access flags are not provided' in str(context.exception))
 
     def test_fail_if_no_interface_indexes(self):
         testee = JavaClassBuilder()
@@ -36,7 +38,8 @@ class TestJavaClassBuilder(unittest.TestCase):
                 .with_fields(STUB) \
                 .with_methods(STUB) \
                 .build()
-        self.assertTrue('Interface indexes were not set' in str(context.exception))
+        self.assertTrue(
+            'Interface indexes were not set' in str(context.exception))
 
     def test_fail_if_no_fields(self):
         testee = JavaClassBuilder()

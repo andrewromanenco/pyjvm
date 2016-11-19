@@ -1,5 +1,6 @@
 """Interfaces related code."""
 
+
 def read_interfaces(reader):
     """Read interfaces for the class."""
     count = reader.get_u2()

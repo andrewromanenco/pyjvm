@@ -5,8 +5,8 @@ from pyjvm.bytecode_readers import BytecodeFileReader
 from pyjvm.class_parser import ClassParser
 from pyjvm.classfile.access_flags import ClassFlag
 
-class ListByteCodeReader(AbstractBytecodeReader):
 
+class ListByteCodeReader(AbstractBytecodeReader):
     def __init__(self, data):
         self.bytes = bytes(data)
         self.index = 0
@@ -16,14 +16,13 @@ class ListByteCodeReader(AbstractBytecodeReader):
         if n == 1:
             return self.bytes[self.index - 1:self.index]
         else:
-            return self.bytes[self.index - n: self.index]
+            return self.bytes[self.index - n:self.index]
 
     def size(self):
         return len(self.bytes)
 
 
 class TestClassParser(unittest.TestCase):
-
     def setUp(self):
         self.parser = ClassParser()
 
@@ -33,7 +32,8 @@ class TestClassParser(unittest.TestCase):
         self.assertTrue('No CAFEBABE' in str(context.exception))
 
     def test_parse_does_not_fail_with_good_input(self):
-        klass = self.parser.parse(BytecodeFileReader('tests/res/SampleClass.class'))
+        klass = self.parser.parse(
+            BytecodeFileReader('tests/res/SampleClass.class'))
         self.assertEqual(klass.constant_pool.slots_count(), 110)
         self.assertTrue(klass.access_flags & ClassFlag.ACC_PUBLIC.value)
         self.assertFalse(klass.access_flags & ClassFlag.ACC_FINAL.value)

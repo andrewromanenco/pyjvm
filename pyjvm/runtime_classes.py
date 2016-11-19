@@ -2,6 +2,7 @@
 
 from pyjvm.utils.javap import resolve_class_name
 
+
 class RuntimeClass:
     '''Runtime version of a java class.'''
 

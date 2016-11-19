@@ -2,10 +2,11 @@ import unittest
 
 from pyjvm.bytecode_readers import JarBytecodeFileReader
 
-class TestJarBytecodeFileReader(unittest.TestCase):
 
+class TestJarBytecodeFileReader(unittest.TestCase):
     def setUp(self):
-        self.reader = JarBytecodeFileReader('tests/res/sample.jar', 'some/pkg/JarredClass')
+        self.reader = JarBytecodeFileReader('tests/res/sample.jar',
+                                            'some/pkg/JarredClass')
 
     def test_size_returns_all_bytes(self):
         self.assertEqual(self.reader.size(), 205)
@@ -19,6 +20,7 @@ class TestJarBytecodeFileReader(unittest.TestCase):
     def test_read_only_available_bytes(self):
         byte = self.reader.read(5000)
         self.assertEqual(len(byte), 205)
+
 
 if __name__ == '__main__':
     unittest.main()

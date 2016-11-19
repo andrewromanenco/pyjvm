@@ -5,6 +5,7 @@ import zipfile
 from abc import ABCMeta, abstractmethod
 from pyjvm.bytecode_readers import BytecodeFileReader, JarBytecodeFileReader
 
+
 class ClassPath:
     '''Collection of class path entries.'''
 
@@ -26,6 +27,7 @@ class ClassPath:
             if data is not None:
                 return data
         return None
+
 
 class ClassPathEntry(metaclass=ABCMeta):
     '''An entry to in a class path.'''

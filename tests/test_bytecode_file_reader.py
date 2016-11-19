@@ -2,8 +2,8 @@ import unittest
 
 from pyjvm.bytecode_readers import BytecodeFileReader
 
-class TestBytecodeFileReader(unittest.TestCase):
 
+class TestBytecodeFileReader(unittest.TestCase):
     def setUp(self):
         self.reader = BytecodeFileReader('tests/res/SampleClass.class')
 
@@ -19,6 +19,7 @@ class TestBytecodeFileReader(unittest.TestCase):
     def test_read_only_available_bytes(self):
         byte = self.reader.read(5000)
         self.assertEqual(len(byte), 1989)
+
 
 if __name__ == '__main__':
     unittest.main()

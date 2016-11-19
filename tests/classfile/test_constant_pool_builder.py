@@ -3,8 +3,8 @@ import unittest
 from pyjvm.classfile.constant_pool import ConstantPool
 from pyjvm.classfile.constant_pool import ConstantPoolBuilder
 
-class TestConstantPoolBuilder(unittest.TestCase):
 
+class TestConstantPoolBuilder(unittest.TestCase):
     def test_add_entry(self):
         testee = ConstantPoolBuilder()
         testee.append_entry(1)

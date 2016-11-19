@@ -3,9 +3,11 @@
 from collections import namedtuple
 from pyjvm.classfile.attributes import read_attributes
 
-Method = namedtuple(
-    'Method',
-    ['access_flags', 'name_index', 'descriptor_index', 'attributes_count', 'attributes'])
+Method = namedtuple('Method', [
+    'access_flags', 'name_index', 'descriptor_index', 'attributes_count',
+    'attributes'
+])
+
 
 def read_methods(reader):
     """Read class methods."""
@@ -16,12 +18,8 @@ def read_methods(reader):
         name_index = reader.get_u2()
         descriptor_index = reader.get_u2()
         attributes = read_attributes(reader)
-        methods.append(Method(
-            access_flags,
-            name_index,
-            descriptor_index,
-            len(attributes),
-            attributes
-            ))
+        methods.append(
+            Method(access_flags, name_index, descriptor_index,
+                   len(attributes), attributes))
         methods_count -= 1
     return methods

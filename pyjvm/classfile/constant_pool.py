@@ -3,6 +3,7 @@
 from collections import namedtuple
 from enum import Enum
 
+
 class Tag(Enum):
     """Constant pool tags."""
 
@@ -21,63 +22,45 @@ class Tag(Enum):
     CONSTANT_MethodType = 16
     CONSTANT_InvokeDynamic = 18
 
+
 # These are definitions from Jvm8 specs; Chapter 4.4
-ConstantClassInfo = namedtuple(
-    'ConstantClassInfo',
-    ['name_index'])
+ConstantClassInfo = namedtuple('ConstantClassInfo', ['name_index'])
 
-ConstantStringInfo = namedtuple(
-    'ConstantStringInfo',
-    ['string_index'])
+ConstantStringInfo = namedtuple('ConstantStringInfo', ['string_index'])
 
-ConstantNameAndTypeInfo = namedtuple(
-    'ConstantNameAndTypeInfo',
-    ['name_index', 'descriptor_index'])
+ConstantNameAndTypeInfo = namedtuple('ConstantNameAndTypeInfo',
+                                     ['name_index', 'descriptor_index'])
 
-ConstantFieldrefInfo = namedtuple(
-    'ConstantFieldrefInfo',
-    ['class_index', 'name_and_type_index'])
+ConstantFieldrefInfo = namedtuple('ConstantFieldrefInfo',
+                                  ['class_index', 'name_and_type_index'])
 
-ConstantMethodrefInfo = namedtuple(
-    'ConstantMethodrefInfo',
-    ['class_index', 'name_and_type_index'])
+ConstantMethodrefInfo = namedtuple('ConstantMethodrefInfo',
+                                   ['class_index', 'name_and_type_index'])
 
 ConstantInterfaceMethodrefInfo = namedtuple(
-    'ConstantInterfaceMethodrefInfo',
-    ['class_index', 'name_and_type_index'])
+    'ConstantInterfaceMethodrefInfo', ['class_index', 'name_and_type_index'])
 
-ConstantIntegerInfo = namedtuple(
-    'ConstantIntegerInfo',
-    ['bytes'])
+ConstantIntegerInfo = namedtuple('ConstantIntegerInfo', ['bytes'])
 
-ConstantLongInfo = namedtuple(
-    'ConstantLongInfo',
-    ['high_bytes', 'low_bytes'])
+ConstantLongInfo = namedtuple('ConstantLongInfo', ['high_bytes', 'low_bytes'])
 
-ConstantDoubleInfo = namedtuple(
-    'ConstantDoubleInfo',
-    ['high_bytes', 'low_bytes'])
+ConstantDoubleInfo = namedtuple('ConstantDoubleInfo',
+                                ['high_bytes', 'low_bytes'])
 
-ConstantFloatInfo = namedtuple(
-    'ConstantFloatInfo',
-    ['bytes'])
+ConstantFloatInfo = namedtuple('ConstantFloatInfo', ['bytes'])
 
-ConstantUtf8Info = namedtuple(
-    'ConstantUtf8Info',
-    ['length', 'bytes'])
+ConstantUtf8Info = namedtuple('ConstantUtf8Info', ['length', 'bytes'])
 
-ConstantMethodHandleInfo = namedtuple(
-    'ConstantMethodHandleInfo',
-    ['reference_kind', 'reference_index'])
+ConstantMethodHandleInfo = namedtuple('ConstantMethodHandleInfo',
+                                      ['reference_kind', 'reference_index'])
 
-ConstantMethodTypeInfo = namedtuple(
-    'ConstantMethodTypeInfo',
-    ['descriptor_index'])
-
+ConstantMethodTypeInfo = namedtuple('ConstantMethodTypeInfo',
+                                    ['descriptor_index'])
 
 ConstantInvokeDynamicInfo = namedtuple(
     'ConstantInvokeDynamicInfo',
     ['bootstrap_method_attr_index', 'name_and_type_index'])
+
 
 def read_constant_pool(reader):
     """Parse constant pool entries from a stream."""
@@ -101,40 +84,30 @@ def read_constant_pool(reader):
                     class_index=reader.get_u2(),
                     name_and_type_index=reader.get_u2()))
         elif cp_entry_type == Tag.CONSTANT_Class.value:
-            builder.append_entry(
-                ConstantClassInfo(
-                    name_index=reader.get_u2()))
+            builder.append_entry(ConstantClassInfo(name_index=reader.get_u2()))
         elif cp_entry_type == Tag.CONSTANT_Integer.value:
-            builder.append_entry(
-                ConstantIntegerInfo(
-                    bytes=reader.get_u4()))
+            builder.append_entry(ConstantIntegerInfo(bytes=reader.get_u4()))
         elif cp_entry_type == Tag.CONSTANT_Long.value:
             cp_size -= 1
             builder.append_double_entry(
                 ConstantLongInfo(
-                    high_bytes=reader.get_u4(),
-                    low_bytes=reader.get_u4()))
+                    high_bytes=reader.get_u4(), low_bytes=reader.get_u4()))
         elif cp_entry_type == Tag.CONSTANT_Double.value:
             cp_size -= 1
             builder.append_double_entry(
                 ConstantDoubleInfo(
-                    high_bytes=reader.get_u4(),
-                    low_bytes=reader.get_u4()))
+                    high_bytes=reader.get_u4(), low_bytes=reader.get_u4()))
         elif cp_entry_type == Tag.CONSTANT_Float.value:
-            builder.append_entry(
-                ConstantFloatInfo(
-                    bytes=reader.get_u4()))
+            builder.append_entry(ConstantFloatInfo(bytes=reader.get_u4()))
         elif cp_entry_type == Tag.CONSTANT_String.value:
             builder.append_entry(
-                ConstantStringInfo(
-                    string_index=reader.get_u2()))
+                ConstantStringInfo(string_index=reader.get_u2()))
         elif cp_entry_type == Tag.CONSTANT_Utf8.value:
             utf8_length = reader.get_u2()
             utf8_bytes = reader.get_uv(utf8_length)
             builder.append_entry(
                 ConstantUtf8Info(
-                    length=utf8_length,
-                    bytes=utf8_bytes))
+                    length=utf8_length, bytes=utf8_bytes))
         elif cp_entry_type == Tag.CONSTANT_NameAndType.value:
             builder.append_entry(
                 ConstantNameAndTypeInfo(
@@ -147,8 +120,7 @@ def read_constant_pool(reader):
                     reference_index=reader.get_u2()))
         elif cp_entry_type == Tag.CONSTANT_MethodType.value:
             builder.append_entry(
-                ConstantMethodTypeInfo(
-                    descriptor_index=reader.get_u2()))
+                ConstantMethodTypeInfo(descriptor_index=reader.get_u2()))
         elif cp_entry_type == Tag.CONSTANT_InvokeDynamic.value:
             builder.append_entry(
                 ConstantInvokeDynamicInfo(
@@ -158,6 +130,7 @@ def read_constant_pool(reader):
             raise Exception("Not supported entry type: %d" % cp_entry_type)
         cp_size -= 1
     return builder.build()
+
 
 class ConstantPoolBuilder:
     """Build constant pool."""
@@ -178,6 +151,7 @@ class ConstantPoolBuilder:
     def build(self):
         """Return constructed constant pool."""
         return ConstantPool(self.entries)
+
 
 class ConstantPool:
     """Constant pool."""

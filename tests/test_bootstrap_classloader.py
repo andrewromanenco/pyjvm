@@ -3,8 +3,8 @@ import unittest
 from pyjvm.bootstrap_classloader import BootstrapClassloader
 from pyjvm.classpath import ClassPath
 
-class TestBootstrapClassloader(unittest.TestCase):
 
+class TestBootstrapClassloader(unittest.TestCase):
     def test_load_class(self):
         classpath = ClassPath()
         classpath.add('tests/res/sample.jar')

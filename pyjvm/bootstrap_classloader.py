@@ -3,6 +3,7 @@
 from pyjvm.class_parser import ClassParser
 from pyjvm.runtime_classes import RuntimeClass
 
+
 class BootstrapClassloader():
     '''VM bootstrap class loader.'''
 
@@ -17,6 +18,7 @@ class BootstrapClassloader():
             raise Exception('No such class ' + class_name)
         java_class = ClassParser().parse(_BytesToStream(bytecode))
         return RuntimeClass(java_class)
+
 
 class _BytesToStream:
     '''Temp class. To be refactored out.'''

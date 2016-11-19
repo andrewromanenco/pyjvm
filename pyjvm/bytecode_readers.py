@@ -13,11 +13,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 """Various ways to read bytecode"""
 
 import zipfile
 from abc import ABCMeta
+
 
 class AbstractBytecodeReader(metaclass=ABCMeta):
     """Provide read to a bytecode."""
@@ -29,13 +29,14 @@ class AbstractBytecodeReader(metaclass=ABCMeta):
 
     def read(self, number_of_bytes):
         '''Read requested number of bytes and returns them instance of bytes'''
-        result = self.bytes[self.pointer : (self.pointer + number_of_bytes)]
+        result = self.bytes[self.pointer:(self.pointer + number_of_bytes)]
         self.pointer += number_of_bytes
         return result
 
     def size(self):
         '''Return total size of data.'''
         return len(self.bytes)
+
 
 class BytecodeFileReader(AbstractBytecodeReader):
     '''Bytecode reader from a file.'''
@@ -45,6 +46,7 @@ class BytecodeFileReader(AbstractBytecodeReader):
         super().__init__()
         with open(file_path, "rb") as bytecode:
             self.bytes = bytecode.read()
+
 
 class JarBytecodeFileReader(AbstractBytecodeReader):
     '''Read bytecode from a file packed in a jar'''

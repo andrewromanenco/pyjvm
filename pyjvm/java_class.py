@@ -1,5 +1,6 @@
 """In memory representation of parsed bytecode."""
 
+
 class JavaClassBuilder:
     """Util to build immutable java class."""
 

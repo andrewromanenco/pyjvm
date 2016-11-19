@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+
 class ClassFlag(Enum):
     '''Class access and property modifiers'''
 
@@ -27,6 +28,7 @@ class FieldFlag(Enum):
     ACC_TRANSIENT = 0x0080
     ACC_SYNTHETIC = 0x1000
     ACC_ENUM = 0x4000
+
 
 class MethodFlag(Enum):
     '''Method access and property flags.'''
