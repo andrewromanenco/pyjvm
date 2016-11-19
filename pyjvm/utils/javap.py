@@ -30,7 +30,7 @@ def javap(path_to_bytecode):
         class_or_interface=resolve_class_or_interface(klass),
         class_name=resolve_class_name(klass).replace('/', '.'),
         super_class=resolve_super_class_name(klass).replace('/', '.'),
-        interfaces=resolve_interfaces(klass),
+        interfaces=[n.replace('/', '.') for n in resolve_interfaces(klass)],
         fields=resolve_fields(klass),
         methods=resolve_methods(klass))
 
@@ -71,9 +71,7 @@ def resolve_interfaces(klass):
     '''Returns list of all interfaces implemented by a given class.'''
     result = []
     for index in klass.interface_indexes:
-        result.append(
-            name_from_ConstantClassInfo(klass.constant_pool, index).replace(
-                '/', '.'))
+        result.append(name_from_ConstantClassInfo(klass.constant_pool, index))
     return result
 
 
@@ -92,6 +90,7 @@ def resolve_fields(klass):
 
 
 def resolve_methods(klass):
+    '''Read class methods.'''
     result = []
     for method in klass.methods:
         name_entry = klass.constant_pool.entry(method.name_index)
@@ -208,6 +207,7 @@ def string_from_ConstantUtf8Info(entry):
 
 
 def parse_signature(signature):
+    '''Parse method signature.'''
     signature = signature[1:]
     params = []
     while signature[0] != ')':
@@ -219,6 +219,7 @@ def parse_signature(signature):
 
 
 def read_next_token(signature):
+    '''Read next item from a signature.'''
     index = 0
     while signature[index] == '[':
         index += 1
