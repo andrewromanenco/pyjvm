@@ -16,6 +16,14 @@ class TestRuntimeClass(unittest.TestCase):
         self.assertEqual('sample/pckg/SampleClass',
                          self.runtime_class.get_name())
 
+    def test_get_super_name(self):
+        self.assertEqual('java/lang/Object',
+                         self.runtime_class.get_super_name())
+
+    def test_get_interface_names(self):
+        self.assertEqual(['java/io/Serializable'],
+                         self.runtime_class.get_interface_names())
+
 
 if __name__ == '__main__':
     unittest.main()
