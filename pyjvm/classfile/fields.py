@@ -8,9 +8,6 @@ Field = namedtuple('Field', [
     'attributes'
 ])
 
-Attribute = namedtuple('Attribute',
-                       ['attribute_name_index', 'attribute_length', 'info'])
-
 
 def read_fields(reader):
     """Read fields from a reader."""
