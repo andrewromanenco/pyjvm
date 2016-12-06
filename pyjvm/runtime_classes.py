@@ -1,5 +1,6 @@
 '''Runtime classes.'''
 
+from collections import namedtuple
 from pyjvm.utils.javap import resolve_class_name, resolve_super_class_name, resolve_interfaces, resolve_fields
 
 
@@ -10,6 +11,7 @@ class RuntimeClass:
         '''Init with a java class.'''
         self.__java_class = java_class
         self.__name = None
+        self.__static_fields = {}
 
     def get_name(self):
         '''Return java binary class name. This is a string.'''
@@ -33,7 +35,15 @@ class RuntimeClass:
         '''Return list of static fileds (name, type).'''
         all_fields = resolve_fields(self.__java_class)
         result = []
+        Field = namedtuple('Field', ['name', 'type'])
+
         for field in all_fields:
             if 'static' in field.flags:
-                result.append((field.name, field.type))
+                result.append(Field(field.name, field.type))
         return result
+
+    def set_field(name, value):
+        self.__static_fields[name] = value
+
+    def get_field(name):
+        return self.__static_fields[name]
