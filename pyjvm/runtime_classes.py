@@ -12,6 +12,7 @@ class RuntimeClass:
         '''Init with a java class.'''
         self.__java_class = java_class
         self.__name = None
+        self.__static_fields = {}
 
     def get_name(self):
         '''Return java binary class name. This is a string.'''
@@ -46,3 +47,11 @@ class RuntimeClass:
                         name=string_from_ConstantUtf8Info(name_entry),
                         type=string_from_ConstantUtf8Info(type_entry)))
         return result
+
+    def set_field(self, name, value):
+        '''Set value for a static field.'''
+        self.__static_fields[name] = value
+
+    def get_field(self, name):
+        '''Get a value for a static field defined in this class.'''
+        return self.__static_fields[name]
