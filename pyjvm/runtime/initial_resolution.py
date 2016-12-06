@@ -1,4 +1,7 @@
+'''This module initiates a class.'''
+
 def prepare_class(runtime_class):
+    '''Prepare a class. Init all static fields with defaults.'''
     static_fields_defs = runtime_class.get_static_fields_definitions()
     for field in static_fields_defs:
         runtime_class.set_field(field.name, default_for_type(field.type))
