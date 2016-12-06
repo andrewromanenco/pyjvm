@@ -24,6 +24,11 @@ class TestRuntimeClass(unittest.TestCase):
         self.assertEqual(['java/io/Serializable'],
                          self.runtime_class.get_interface_names())
 
+    def test_get_static_fields_definitions(self):
+        self.assertEqual([('serialVersionUID', 'long'), ('value1', 'int'), (
+            'value2', 'double')],
+                         self.runtime_class.get_static_fields_definitions())
+
 
 if __name__ == '__main__':
     unittest.main()

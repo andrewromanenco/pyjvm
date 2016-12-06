@@ -1,6 +1,6 @@
 '''Runtime classes.'''
 
-from pyjvm.utils.javap import resolve_class_name, resolve_super_class_name, resolve_interfaces
+from pyjvm.utils.javap import resolve_class_name, resolve_super_class_name, resolve_interfaces, resolve_fields
 
 
 class RuntimeClass:
@@ -28,3 +28,12 @@ class RuntimeClass:
     def get_interface_names(self):
         '''Returns list of binary names if implemented interfaces.'''
         return resolve_interfaces(self.__java_class)
+
+    def get_static_fields_definitions(self):
+        '''Return list of static fileds (name, type).'''
+        all_fields = resolve_fields(self.__java_class)
+        result = []
+        for field in all_fields:
+            if 'static' in field.flags:
+                result.append((field.name, field.type))
+        return result
