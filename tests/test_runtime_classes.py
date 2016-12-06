@@ -25,8 +25,8 @@ class TestRuntimeClass(unittest.TestCase):
                          self.runtime_class.get_interface_names())
 
     def test_get_static_fields_definitions(self):
-        self.assertEqual([('serialVersionUID', 'long'), ('value1', 'int'), (
-            'value2', 'double')],
+        self.assertEqual([('serialVersionUID', 'J'), ('value1', 'I'), (
+            'value2', 'D')],
                          self.runtime_class.get_static_fields_definitions())
 
 

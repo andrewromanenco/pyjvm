@@ -1,7 +1,8 @@
 '''Runtime classes.'''
 
 from collections import namedtuple
-from pyjvm.utils.javap import resolve_class_name, resolve_super_class_name, resolve_interfaces, resolve_fields
+from pyjvm.classfile.access_flags import FieldFlag
+from pyjvm.utils.javap import resolve_class_name, resolve_super_class_name, resolve_interfaces, string_from_ConstantUtf8Info
 
 
 class RuntimeClass:
@@ -11,7 +12,6 @@ class RuntimeClass:
         '''Init with a java class.'''
         self.__java_class = java_class
         self.__name = None
-        self.__static_fields = {}
 
     def get_name(self):
         '''Return java binary class name. This is a string.'''
@@ -32,18 +32,17 @@ class RuntimeClass:
         return resolve_interfaces(self.__java_class)
 
     def get_static_fields_definitions(self):
-        '''Return list of static fileds (name, type).'''
-        all_fields = resolve_fields(self.__java_class)
+        '''Return list of static fields (name, type).'''
         result = []
         Field = namedtuple('Field', ['name', 'type'])
-
-        for field in all_fields:
-            if 'static' in field.flags:
-                result.append(Field(field.name, field.type))
+        for field in self.__java_class.fields:
+            if field.access_flags & FieldFlag.ACC_STATIC.value:
+                name_entry = self.__java_class.constant_pool.entry(
+                    field.name_index)
+                type_entry = self.__java_class.constant_pool.entry(
+                    field.descriptor_index)
+                result.append(
+                    Field(
+                        name=string_from_ConstantUtf8Info(name_entry),
+                        type=string_from_ConstantUtf8Info(type_entry)))
         return result
-
-    def set_field(name, value):
-        self.__static_fields[name] = value
-
-    def get_field(name):
-        return self.__static_fields[name]
