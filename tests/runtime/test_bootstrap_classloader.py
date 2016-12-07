@@ -1,7 +1,7 @@
 import unittest
 
-from pyjvm.bootstrap_classloader import BootstrapClassloader
 from pyjvm.classpath import ClassPath
+from pyjvm.runtime.bootstrap_classloader import BootstrapClassloader
 
 
 class TestBootstrapClassloader(unittest.TestCase):

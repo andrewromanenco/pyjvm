@@ -1,7 +1,7 @@
 '''VM class loaders.'''
 
 from pyjvm.class_parser import ClassParser
-from pyjvm.runtime_classes import RuntimeClass
+from pyjvm.runtime.runtime_classes import RuntimeClass
 
 
 class BootstrapClassloader():

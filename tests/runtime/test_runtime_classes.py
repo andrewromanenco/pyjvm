@@ -2,7 +2,7 @@ import unittest
 
 from pyjvm.bytecode_readers import BytecodeFileReader
 from pyjvm.class_parser import ClassParser
-from pyjvm.runtime_classes import RuntimeClass
+from pyjvm.runtime.runtime_classes import RuntimeClass
 
 
 class TestRuntimeClass(unittest.TestCase):
