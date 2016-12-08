@@ -16,43 +16,15 @@
 """Various ways to read bytecode"""
 
 import zipfile
-from abc import ABCMeta
 
 
-class AbstractBytecodeReader(metaclass=ABCMeta):
-    """Provide read to a bytecode."""
-
-    def __init__(self):
-        '''Default constructor.'''
-        self.bytes = None
-        self.pointer = 0
-
-    def read(self, number_of_bytes):
-        '''Read requested number of bytes and returns them instance of bytes'''
-        result = self.bytes[self.pointer:(self.pointer + number_of_bytes)]
-        self.pointer += number_of_bytes
-        return result
-
-    def size(self):
-        '''Return total size of data.'''
-        return len(self.bytes)
+def bytecode_from_file(file_path):
+    '''Read bytecode from a file.'''
+    with open(file_path, "rb") as bytecode:
+        return bytecode.read()
 
 
-class BytecodeFileReader(AbstractBytecodeReader):
-    '''Bytecode reader from a file.'''
-
-    def __init__(self, file_path):
-        '''Init with path to a file.'''
-        super().__init__()
-        with open(file_path, "rb") as bytecode:
-            self.bytes = bytecode.read()
-
-
-class JarBytecodeFileReader(AbstractBytecodeReader):
-    '''Read bytecode from a file packed in a jar'''
-
-    def __init__(self, path_to_jar, class_name):
-        '''Init with a class identified by JVM class name from a given jar.'''
-        super().__init__()
-        archive = zipfile.ZipFile(path_to_jar, 'r')
-        self.bytes = archive.read(class_name + '.class')
+def bytecode_from_jar(path_to_jar, class_name):
+    '''Read bytecode from a jar. class_name is binary class name.'''
+    archive = zipfile.ZipFile(path_to_jar, 'r')
+    return archive.read(class_name + '.class')

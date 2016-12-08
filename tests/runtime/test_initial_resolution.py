@@ -1,6 +1,6 @@
 import unittest
 
-from pyjvm.bytecode_readers import BytecodeFileReader
+from pyjvm.bytecode_readers import bytecode_from_file
 from pyjvm.class_parser import ClassParser
 from pyjvm.runtime.runtime_classes import RuntimeClass
 from pyjvm.runtime.initial_resolution import prepare_class
@@ -10,7 +10,7 @@ class TestInitialResolution(unittest.TestCase):
     def setUp(self):
         parser = ClassParser()
         bytecode = parser.parse(
-            BytecodeFileReader('tests/res/SampleClass.class'))
+            bytecode_from_file('tests/res/SampleClass.class'))
         self.runtime_class = RuntimeClass(bytecode)
 
     def test_prepare_class(self):

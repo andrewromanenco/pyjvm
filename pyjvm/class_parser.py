@@ -10,9 +10,9 @@ from pyjvm.classfile.methods import read_methods
 class ClassParser:
     """Parse java bytecode to in-memory structure."""
 
-    def parse(self, bytecode_reader):
-        """Read bytes from a source and create JavaClass instance."""
-        reader = _ByteReaderDecorator(bytecode_reader)
+    def parse(self, bytecode):
+        """Read bytes from a source and create JavaClass instance. Bytecode is a list of bytes."""
+        reader = _ByteReaderDecorator(bytecode)
         self.__confirm_header(reader)
         self.__confirm_jdk8(reader)
         constant_pool = read_constant_pool(reader)
@@ -53,29 +53,35 @@ class ClassParser:
 class _ByteReaderDecorator:
     '''Util class to make byte processing easier.'''
 
-    def __init__(self, bytecode_reader):
+    def __init__(self, bytecode):
         '''Init with a valid BytecodeReader.'''
-        self.reader = bytecode_reader
+        self.bytecode = bytecode
+        self.pointer = 0
 
     def get_u1(self):
         '''Read single byte.'''
-        return self.reader.read(1)[0]
+        value = self.bytecode[self.pointer]
+        self.pointer += 1
+        return value
 
     def get_u2(self):
         '''Read two bytes.'''
-        byte1 = self.reader.read(1)[0]
-        byte2 = self.reader.read(1)[0]
+        byte1 = self.bytecode[self.pointer]
+        byte2 = self.bytecode[self.pointer + 1]
+        self.pointer += 2
         return (byte1 << 8) + byte2
 
     def get_u4(self):
         '''Read four bytes.'''
-        byte1 = self.reader.read(1)[0]
-        byte2 = self.reader.read(1)[0]
-        byte3 = self.reader.read(1)[0]
-        byte4 = self.reader.read(1)[0]
+        byte1 = self.bytecode[self.pointer]
+        byte2 = self.bytecode[self.pointer + 1]
+        byte3 = self.bytecode[self.pointer + 2]
+        byte4 = self.bytecode[self.pointer + 3]
+        self.pointer += 4
         return (byte1 << 24) + (byte2 << 16) + (byte3 << 8) + byte4
 
     def get_uv(self, length):
         '''Read variable amount of bytes.'''
-        data = self.reader.read(length)
+        data = self.bytecode[self.pointer:self.pointer + length]
+        self.pointer += length
         return data

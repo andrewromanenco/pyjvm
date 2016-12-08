@@ -4,7 +4,7 @@ import struct
 
 from collections import namedtuple
 
-from pyjvm.bytecode_readers import BytecodeFileReader
+from pyjvm.bytecode_readers import bytecode_from_file
 from pyjvm.class_parser import ClassParser
 from pyjvm.classfile.access_flags import ClassFlag
 from pyjvm.classfile.access_flags import FieldFlag
@@ -24,7 +24,7 @@ Method = namedtuple('Method',
 def javap(path_to_bytecode):
     '''Expects a path to Java 8 class file and returns resolved strings.'''
     parser = ClassParser()
-    klass = parser.parse(BytecodeFileReader(path_to_bytecode))
+    klass = parser.parse(bytecode_from_file(path_to_bytecode))
     resolved_class = ResolvedClass(
         accessor=resolve_class_accessor(klass),
         class_or_interface=resolve_class_or_interface(klass),

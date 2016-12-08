@@ -1,6 +1,6 @@
 import unittest
 
-from pyjvm.bytecode_readers import BytecodeFileReader
+from pyjvm.bytecode_readers import bytecode_from_file
 from pyjvm.class_parser import ClassParser
 from pyjvm.runtime.runtime_classes import RuntimeClass
 
@@ -9,7 +9,7 @@ class TestRuntimeClass(unittest.TestCase):
     def setUp(self):
         parser = ClassParser()
         bytecode = parser.parse(
-            BytecodeFileReader('tests/res/SampleClass.class'))
+            bytecode_from_file('tests/res/SampleClass.class'))
         self.runtime_class = RuntimeClass(bytecode)
 
     def test_get_name(self):
@@ -25,8 +25,8 @@ class TestRuntimeClass(unittest.TestCase):
                          self.runtime_class.get_interface_names())
 
     def test_get_static_fields_definitions(self):
-        self.assertEqual([('serialVersionUID', 'J'), ('value1', 'I'), (
-            'value2', 'D')],
+        self.assertEqual([('serialVersionUID', 'J'), ('value1', 'I'),
+                          ('value2', 'D')],
                          self.runtime_class.get_static_fields_definitions())
 
 

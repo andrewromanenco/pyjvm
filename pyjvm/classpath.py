@@ -3,7 +3,7 @@
 import os
 import zipfile
 from abc import ABCMeta, abstractmethod
-from pyjvm.bytecode_readers import BytecodeFileReader, JarBytecodeFileReader
+from pyjvm.bytecode_readers import bytecode_from_file, bytecode_from_jar
 
 
 class ClassPath:
@@ -52,8 +52,7 @@ class FolderClassPathEntry(ClassPathEntry):
         file_path = os.path.join(self.path, class_name + '.class')
         if not os.path.isfile(file_path):
             return None
-        reader = BytecodeFileReader(file_path)
-        return reader.read(reader.size())
+        return bytecode_from_file(file_path)
 
 
 class JarClassPathEntry(ClassPathEntry):
@@ -78,5 +77,4 @@ class JarClassPathEntry(ClassPathEntry):
         '''Returns bytes for requested java binary name. None if not found.'''
         if class_name not in self.classes:
             return None
-        reader = JarBytecodeFileReader(self.path, class_name)
-        return reader.read(reader.size())
+        return bytecode_from_jar(self.path, class_name)
