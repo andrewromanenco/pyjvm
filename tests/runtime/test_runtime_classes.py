@@ -40,6 +40,9 @@ class TestRuntimeClass(unittest.TestCase):
         self.assertEqual('(Ljava/util/function/Function;)I',
                          method.get_signature())
 
+    def test_get_static_constructor(self):
+        self.assertIsNotNone(self.runtime_class.get_static_constructor())
+
 
 if __name__ == '__main__':
     unittest.main()

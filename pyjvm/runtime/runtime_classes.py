@@ -72,6 +72,10 @@ class RuntimeClass:
             return Method(name, signature, method)
         return None
 
+    def get_static_constructor(self):
+        '''Returns method for static constructor.'''
+        return self.get_method('<clinit>', '()V')
+
 
 class Method:
     '''A method.'''
