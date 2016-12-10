@@ -55,3 +55,34 @@ class RuntimeClass:
     def get_field(self, name):
         '''Get a value for a static field defined in this class.'''
         return self.__static_fields[name]
+
+    def get_method(self, method_name, method_signature):
+        '''Returns method for given name and signature. Does not check parent.'''
+        for method in self.__java_class.methods:
+            name_entry = self.__java_class.constant_pool.entry(
+                method.name_index)
+            name = string_from_ConstantUtf8Info(name_entry)
+            if name != method_name:
+                continue
+            type_entry = self.__java_class.constant_pool.entry(
+                method.descriptor_index)
+            signature = string_from_ConstantUtf8Info(type_entry)
+            if signature != method_signature:
+                continue
+            return Method(name, signature, method)
+        return None
+
+
+class Method:
+    '''A method.'''
+
+    def __init__(self, name, signature, binary_method_structure):
+        '''Init method data.'''
+        self.name = name
+        self.signature = signature
+
+    def get_name(self):
+        return self.name
+
+    def get_signature(self):
+        return self.signature

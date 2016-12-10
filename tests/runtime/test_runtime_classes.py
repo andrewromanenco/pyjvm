@@ -29,6 +29,17 @@ class TestRuntimeClass(unittest.TestCase):
                           ('value2', 'D')],
                          self.runtime_class.get_static_fields_definitions())
 
+    def test_get_method_none(self):
+        method = self.runtime_class.get_method('no', '()V')
+        self.assertIsNone(method)
+
+    def test_get_method(self):
+        method = self.runtime_class.get_method(
+            'apply', '(Ljava/util/function/Function;)I')
+        self.assertEqual('apply', method.get_name())
+        self.assertEqual('(Ljava/util/function/Function;)I',
+                         method.get_signature())
+
 
 if __name__ == '__main__':
     unittest.main()
