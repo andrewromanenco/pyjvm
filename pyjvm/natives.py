@@ -17,6 +17,7 @@
 
 import logging
 
+import re
 from pyjvm.platform.java.lang.clazz import *
 from pyjvm.platform.java.lang.double import *
 from pyjvm.platform.java.lang.float import *
@@ -38,6 +39,7 @@ from pyjvm.platform.sun.reflect.reflection import *
 
 logger = logging.getLogger(__name__)
 
+LOOKUP_REPLACEMENT = re.compile(r"[-\.\;/()\[]")
 
 def exec_native(frame, args, klass, method_name, method_signature):
     '''Handle calls to java's native methods.
@@ -49,13 +51,10 @@ def exec_native(frame, args, klass, method_name, method_signature):
         logger.debug("No need to call native registerNatives()V for class: %s",
                      klass.this_name)
         return
-    lookup_name = "%s_%s_%s" % (klass.this_name, method_name, method_signature)
-    lookup_name = lookup_name.replace("/", "_")
-    lookup_name = lookup_name.replace("(", "_")
-    lookup_name = lookup_name.replace(")", "_")
-    lookup_name = lookup_name.replace("[", "_")
-    lookup_name = lookup_name.replace(";", "_")
-    lookup_name = lookup_name.replace(".", "_")
+    
+    lookup_name = "_".join([klass.this_name, method_name, method_signature])
+    lookup_name = re.sub(LOOKUP_REPLACEMENT, "_", lookup_name)
+
     if lookup_name not in globals():
         logger.error("Native not yet ready: %s:%s in %s", method_name,
                      method_signature, klass.this_name)
