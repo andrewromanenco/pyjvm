@@ -45,7 +45,7 @@ def invokestatic(frame):
     assert method_signature is not None
 
     if klass_name == "sun/misc/VM" and method_name == "isBooted":
-        # shortcut, to be remvoed
+        # shortcut, to be removed
         frame.stack.append(1)
         return
 

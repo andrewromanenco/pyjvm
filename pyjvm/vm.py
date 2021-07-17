@@ -357,7 +357,7 @@ class VM(object):
         For each byte code specific operation function is called.
         Operation can throw exception.
         Thread may be busy (e.g. monitor is not available).
-        Returns from syncronized methods are handled.
+        Returns from synchronized methods are handled.
         '''
         frame_stack = thread.frame_stack
         while len(frame_stack) > 0:

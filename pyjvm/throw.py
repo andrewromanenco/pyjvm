@@ -17,7 +17,7 @@
 
 
 class JavaException(Exception):
-    '''PY excpetion.
+    '''PY exception.
 
     Real heap reference is stored in ref
     '''

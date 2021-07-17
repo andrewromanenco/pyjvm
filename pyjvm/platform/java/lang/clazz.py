@@ -19,7 +19,7 @@
 # NOT FULLY IMPLEMENTED!!!!
 # JUST ENOUGHT TO MAKE IT WORK
 #
-# Constructor paremeters always empty
+# Constructor parameters always empty
 #
 
 import logging

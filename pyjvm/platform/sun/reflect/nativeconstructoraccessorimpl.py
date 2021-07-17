@@ -36,7 +36,7 @@ def sun_reflect_NativeConstructorAccessorImpl_newInstance0__Ljava_lang_reflect_C
     frame.stack.append(iref)
     method = clazz.find_method("<init>", signature)
 
-    # actully running constructor in exclusive mode
+    # actually running constructor in exclusive mode
     pvm_thread = Thread(frame.vm, frame.vm.top_thread_ref)
     pvm_thread.is_alive = True
     m_args = [None]*method[1]
