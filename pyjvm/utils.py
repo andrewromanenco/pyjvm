@@ -43,7 +43,7 @@ def args_count(desc):
 
 
 def _args_count(desc):
-    '''Recursive parsing for method signuture'''
+    '''Recursive parsing for method signature'''
     char_ = desc[0]
     if char_ == ")":
         return 0

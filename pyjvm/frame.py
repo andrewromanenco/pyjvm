@@ -22,7 +22,7 @@ f_counter = 1  # make it easy to debug
 
 
 class Frame(object):
-    '''Frame is created for every method invokation'''
+    '''Frame is created for every method invocation'''
 
     def __init__(self, _thread, _this_class, _method, _args=[], _desc=""):
         self.thread = _thread

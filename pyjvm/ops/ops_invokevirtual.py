@@ -69,7 +69,7 @@ def invokevirtual(frame):
         vm_obj_call(frame, args, method_name, method_signature)
         return
 
-    # ignore signute polimorphic method
+    # ignore signature polymorphic method
     instance = frame.vm.heap[args[0][1]]
     klass = instance.java_class
     method = None

@@ -315,7 +315,7 @@ def add_fields(jc, constant_pool, data):  # list of (flag, name, desc)
 
 
 def default_for_type(desc):
-    '''Default values for primiteves and refs'''
+    '''Default values for primitives and refs'''
     if desc == "I":
         return 0
     elif desc == "J":  # long
